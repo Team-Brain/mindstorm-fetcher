@@ -1,32 +1,19 @@
 package dk.aau.teambrain.mindstormfetcher;
 
-import dk.aau.teambrain.mindstormfetcher.socket.SocketIo;
-import lejos.hardware.Button;
+import dk.aau.teambrain.mindstormfetcher.thread.ExitThread;
+import dk.aau.teambrain.mindstormfetcher.thread.SocketIoThread;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        SocketIo.run();
+        // Start the socketIO thread
+        new SocketIoThread().start();
+        // Start the exit listener thread
+        new ExitThread().start();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    if (Button.ESCAPE.isDown()) {
-                        System.exit(200);
-                    }
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).run();
-
-
-        Button.waitForAnyEvent();
+        // Initialize robot
+        Fetchy.init();
 
     }
 
