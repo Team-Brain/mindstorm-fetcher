@@ -1,7 +1,7 @@
-package dk.aau.teambrain.mindstormfetcher;
+package dk.aau.teambrain.mindstormfetchy;
 
-import dk.aau.teambrain.mindstormfetcher.thread.ExitThread;
-import dk.aau.teambrain.mindstormfetcher.thread.SocketIoThread;
+import dk.aau.teambrain.mindstormfetchy.thread.ExitThread;
+import dk.aau.teambrain.mindstormfetchy.thread.SocketIoThread;
 
 public class Main {
 

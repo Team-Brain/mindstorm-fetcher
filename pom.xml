@@ -53,7 +53,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>dk.aau.teambrain.mindstormfetcher.Main</mainClass>
+                            <mainClass>dk.aau.teambrain.mindstormfetchy.Main</mainClass>
                         </manifest>
                         <manifestEntries>
                             <!-- if ev3classes scope is "provided" -> make sure this point to

@@ -1,6 +1,6 @@
-package dk.aau.teambrain.mindstormfetcher.behavior;
+package dk.aau.teambrain.mindstormfetchy.behavior;
 
-import dk.aau.teambrain.mindstormfetcher.Fetchy;
+import dk.aau.teambrain.mindstormfetchy.Fetchy;
 import lejos.robotics.subsumption.Behavior;
 
 public class SearchBehavior implements Behavior {

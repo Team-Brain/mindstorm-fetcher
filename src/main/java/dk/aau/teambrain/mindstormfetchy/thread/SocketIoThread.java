@@ -1,9 +1,9 @@
-package dk.aau.teambrain.mindstormfetcher.thread;
+package dk.aau.teambrain.mindstormfetchy.thread;
 
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import dk.aau.teambrain.mindstormfetcher.Fetchy;
-import dk.aau.teambrain.mindstormfetcher.model.Request;
+import dk.aau.teambrain.mindstormfetchy.Fetchy;
+import dk.aau.teambrain.mindstormfetchy.model.Request;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;

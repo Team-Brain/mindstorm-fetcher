@@ -1,4 +1,4 @@
-package dk.aau.teambrain.mindstormfetcher.utils;
+package dk.aau.teambrain.mindstormfetchy.utils;
 
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3ColorSensor;

@@ -1,4 +1,4 @@
-package dk.aau.teambrain.mindstormfetcher.utils;
+package dk.aau.teambrain.mindstormfetchy.utils;
 
 import lejos.hardware.Brick;
 import lejos.hardware.BrickFinder;

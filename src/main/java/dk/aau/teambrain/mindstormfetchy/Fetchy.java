@@ -1,12 +1,12 @@
-package dk.aau.teambrain.mindstormfetcher;
+package dk.aau.teambrain.mindstormfetchy;
 
-import dk.aau.teambrain.mindstormfetcher.behavior.CarryHomeBehavior;
-import dk.aau.teambrain.mindstormfetcher.behavior.ScanObjectBehavior;
-import dk.aau.teambrain.mindstormfetcher.behavior.SearchBehavior;
-import dk.aau.teambrain.mindstormfetcher.behavior.WaitForCommandBehavior;
-import dk.aau.teambrain.mindstormfetcher.model.Request;
-import dk.aau.teambrain.mindstormfetcher.utils.ColorSensor;
-import dk.aau.teambrain.mindstormfetcher.utils.IRSensor;
+import dk.aau.teambrain.mindstormfetchy.behavior.CarryHomeBehavior;
+import dk.aau.teambrain.mindstormfetchy.behavior.ScanObjectBehavior;
+import dk.aau.teambrain.mindstormfetchy.behavior.SearchBehavior;
+import dk.aau.teambrain.mindstormfetchy.behavior.WaitForCommandBehavior;
+import dk.aau.teambrain.mindstormfetchy.model.Request;
+import dk.aau.teambrain.mindstormfetchy.utils.ColorSensor;
+import dk.aau.teambrain.mindstormfetchy.utils.IRSensor;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.port.MotorPort;

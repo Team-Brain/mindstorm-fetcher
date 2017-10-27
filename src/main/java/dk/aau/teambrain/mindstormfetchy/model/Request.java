@@ -1,4 +1,4 @@
-package dk.aau.teambrain.mindstormfetcher.model;
+package dk.aau.teambrain.mindstormfetchy.model;
 
 import com.google.api.client.util.Key;
 

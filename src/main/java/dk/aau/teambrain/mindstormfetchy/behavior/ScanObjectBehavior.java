@@ -1,8 +1,8 @@
-package dk.aau.teambrain.mindstormfetcher.behavior;
+package dk.aau.teambrain.mindstormfetchy.behavior;
 
-import dk.aau.teambrain.mindstormfetcher.Fetchy;
-import dk.aau.teambrain.mindstormfetcher.State;
-import dk.aau.teambrain.mindstormfetcher.utils.ColorSensor;
+import dk.aau.teambrain.mindstormfetchy.Fetchy;
+import dk.aau.teambrain.mindstormfetchy.State;
+import dk.aau.teambrain.mindstormfetchy.utils.ColorSensor;
 import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
 

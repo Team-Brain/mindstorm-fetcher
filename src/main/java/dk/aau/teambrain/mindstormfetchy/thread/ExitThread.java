@@ -1,4 +1,4 @@
-package dk.aau.teambrain.mindstormfetcher.thread;
+package dk.aau.teambrain.mindstormfetchy.thread;
 
 import lejos.hardware.Button;
 

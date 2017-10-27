@@ -1,4 +1,4 @@
-package dk.aau.teambrain.mindstormfetcher;
+package dk.aau.teambrain.mindstormfetchy;
 
 public enum State {
 

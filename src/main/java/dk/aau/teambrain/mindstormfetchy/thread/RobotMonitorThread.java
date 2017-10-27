@@ -1,6 +1,6 @@
-package dk.aau.teambrain.mindstormfetcher.thread;
+package dk.aau.teambrain.mindstormfetchy.thread;
 
-import dk.aau.teambrain.mindstormfetcher.Fetchy;
+import dk.aau.teambrain.mindstormfetchy.Fetchy;
 import lejos.hardware.lcd.LCD;
 
 /**
