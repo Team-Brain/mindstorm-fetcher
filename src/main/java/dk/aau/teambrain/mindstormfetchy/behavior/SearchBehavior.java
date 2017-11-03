@@ -24,5 +24,6 @@ public class SearchBehavior implements Behavior {
             } catch (Exception ignored) {
             }
         }
+        Fetchy.stop();
     }
 }

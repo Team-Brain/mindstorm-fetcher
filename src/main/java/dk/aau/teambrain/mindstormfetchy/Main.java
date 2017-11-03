@@ -7,15 +7,15 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        // Start the socketIO thread
-        new SocketIoThread().start();
         // Start the exit listener thread
         new ExitThread().start();
+
+        // Start the socketIO thread
+        new SocketIoThread().start();
 
         // Initialize robot
         Fetchy.init();
 
     }
-
 
 }

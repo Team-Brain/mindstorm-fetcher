@@ -6,20 +6,23 @@ import lejos.robotics.Color;
 import lejos.robotics.ColorDetector;
 import lejos.robotics.ColorIdentifier;
 
-public class ColorSensor implements ColorDetector, ColorIdentifier {
+/**
+ * Wrapper class for EV3ColorSensor.
+ */
+public class ColorSensorWrapper implements ColorDetector, ColorIdentifier {
 
     private EV3ColorSensor sensor;
     private float[] sample;
 
     /**
-     * Creates ColorSensor object. This is a wrapper class for EV3ColorSensor.
+     * Creates ColorSensorWrapper object.
      *
      * @param port SensorPort of EV3ColorSensor device.
      */
-    public ColorSensor(Port port) {
+    public ColorSensorWrapper(Port port) {
         sensor = new EV3ColorSensor(port);
-        setAmbientMode();
-        setFloodLight(false);
+        setColorIdMode();
+        setFloodLight(true);
     }
 
     /**
