@@ -4,24 +4,27 @@ import dk.aau.teambrain.mindstormfetchy.Fetchy;
 import dk.aau.teambrain.mindstormfetchy.State;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
 import lejos.hardware.Sound;
-import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
 
 import java.util.Random;
 
-public class ScanObjectBehavior implements Behavior {
+public class ScanObjectBehavior extends BaseBehavior {
 
     private static final int SCAN_COLOR_TRIES = 20;
     private static final int SCAN_COLOR_DELAY = 200;
     private static final float MIN_SUCCESS_THRESHOLD = 0.75f;
 
-    private static boolean suppressed;
+    @Override
+    protected String getName() {
+        return "ScanObject";
+    }
 
     public boolean takeControl() {
         return (Fetchy.irSensor.getRange() < 5);
     }
 
     public void action() {
+        super.action();
         suppressed = false;
         Delay.msDelay(1000);
         if (checkColor()) {
@@ -29,15 +32,19 @@ public class ScanObjectBehavior implements Behavior {
             Fetchy.currentState = State.CARRYING_HOME;
         } else {
             Fetchy.backward(2000);
-            double angle = 45 + (Math.random() * 135);
-            double orientedAngle = new Random().nextBoolean() ? angle : -angle;
-            Fetchy.turn(orientedAngle);
+            turnRandomly();
         }
 
     }
 
     public void suppress() {
         suppressed = true;
+    }
+
+    private void turnRandomly() {
+        double angle = 45 + (Math.random() * 135);
+        double orientedAngle = new Random().nextBoolean() ? angle : -angle;
+        Fetchy.turn(orientedAngle);
     }
 
     /**

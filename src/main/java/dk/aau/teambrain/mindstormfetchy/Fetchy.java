@@ -1,9 +1,6 @@
 package dk.aau.teambrain.mindstormfetchy;
 
-import dk.aau.teambrain.mindstormfetchy.behavior.CarryHomeBehavior;
-import dk.aau.teambrain.mindstormfetchy.behavior.ScanObjectBehavior;
-import dk.aau.teambrain.mindstormfetchy.behavior.SearchBehavior;
-import dk.aau.teambrain.mindstormfetchy.behavior.WaitForCommandBehavior;
+import dk.aau.teambrain.mindstormfetchy.behavior.*;
 import dk.aau.teambrain.mindstormfetchy.model.Request;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
 import dk.aau.teambrain.mindstormfetchy.utils.IRSensorWrapper;
@@ -16,6 +13,7 @@ import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3IRSensor;
+import lejos.hardware.sensor.SensorMode;
 import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
@@ -39,39 +37,44 @@ public class Fetchy {
 
     public static State currentState;
 
+    public static EV3LargeRegulatedMotor leftMotor;
+    public static EV3LargeRegulatedMotor rightMotor;
+
     public static void init() {
         System.out.println("Initializing Fetchy");
 
         // Initialize sensors
-//        seekerSensor = new EV3IRSensor(SensorPort.S2);
+        seekerSensor = new EV3IRSensor(SensorPort.S2);
         colorSensor = new ColorSensorWrapper(SensorPort.S3);
-        irSensor = new IRSensorWrapper(SensorPort.S4);
+//        irSensor = new IRSensorWrapper(SensorPort.S4);
 
-//        seekerSensor.getSeekMode();
+        seekerSensor.getSeekMode();
 
         // Initialize grip motor
         gripMotor = new EV3MediumRegulatedMotor(MotorPort.A);
         gripMotor.setSpeed(200);
 
         // Initialize pilot
-        EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.B);
-        EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.C);
-        Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 30.4).offset(-70);
-        Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 30.4).offset(70);
+        leftMotor = new EV3LargeRegulatedMotor(MotorPort.B);
+        rightMotor = new EV3LargeRegulatedMotor(MotorPort.C);
+        Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 30.4).offset(-72);
+        Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 30.4).offset(72);
         Chassis chassis = new WheeledChassis(new Wheel[]{leftWheel, rightWheel}, WheeledChassis.TYPE_DIFFERENTIAL);
         pilot = new MovePilot(chassis);
         pilot.setLinearSpeed(50);
 
         // Initialize behaviours
-        Behavior b1 = new SearchBehavior();
-        Behavior b2 = new ScanObjectBehavior();
-        Behavior b3 = new CarryHomeBehavior();
-        Behavior b4 = new WaitForCommandBehavior();
-        Behavior[] bArray = {b1, b2, b3, b4};
+        Behavior searchBeh = new SearchBehavior();
+        Behavior goToBeh = new GoToObjectBehavior();
+        Behavior scanBeh = new ScanObjectBehavior();
+        Behavior carryHomeBeh = new CarryHomeBehavior();
+        Behavior waitForCommandBeh = new WaitForCommandBehavior();
+        Behavior[] bArray = {searchBeh, goToBeh, scanBeh, carryHomeBeh, waitForCommandBeh};
 
         Arbitrator arb = new Arbitrator(bArray);
         arb.go();
         System.out.println("Initialization complete");
+
     }
 
     public static void forward() {
@@ -112,6 +115,13 @@ public class Fetchy {
 
     public static void turn180() {
         pilot.rotate(180);
+    }
+
+    public static void createDemoRequest() {
+        Delay.msDelay(2000);
+        Request request = new Request();
+        request.color = "Blue";
+        Fetchy.requestQueue.add(request);
     }
 
     // TODO: Create nice intro message

@@ -1,7 +1,6 @@
 package dk.aau.teambrain.mindstormfetchy;
 
 import dk.aau.teambrain.mindstormfetchy.thread.ExitThread;
-import dk.aau.teambrain.mindstormfetchy.thread.SocketIoThread;
 
 public class Main {
 
@@ -11,7 +10,7 @@ public class Main {
         new ExitThread().start();
 
         // Start the socketIO thread
-        new SocketIoThread().start();
+//        new SocketIoThread().start();
 
         // Initialize robot
         Fetchy.init();

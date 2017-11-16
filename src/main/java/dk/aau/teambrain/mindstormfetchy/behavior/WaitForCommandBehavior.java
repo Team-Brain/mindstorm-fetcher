@@ -1,9 +1,13 @@
 package dk.aau.teambrain.mindstormfetchy.behavior;
 
 import dk.aau.teambrain.mindstormfetchy.Fetchy;
-import lejos.robotics.subsumption.Behavior;
 
-public class WaitForCommandBehavior implements Behavior {
+public class WaitForCommandBehavior extends BaseBehavior {
+
+    @Override
+    protected String getName() {
+        return "WaitForCommand";
+    }
 
     @Override
     public boolean takeControl() {
@@ -12,6 +16,9 @@ public class WaitForCommandBehavior implements Behavior {
 
     @Override
     public void action() {
+        super.action();
+        // TODO: Only for demo testing, in production remove this code
+        Fetchy.createDemoRequest();
     }
 
     @Override
