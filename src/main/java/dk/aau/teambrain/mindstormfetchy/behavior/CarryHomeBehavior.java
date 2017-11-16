@@ -21,13 +21,14 @@ public class CarryHomeBehavior extends BaseBehavior {
     public void action() {
         super.action();
         suppressed = false;
-        Fetchy.turn180();
+        /*Fetchy.turn180();
         Fetchy.letGo();
         Fetchy.backward(2000);
         Fetchy.turn180();
         Fetchy.requestQueue.remove(0);
-        Fetchy.currentState = State.WAITING_FOR_COMMAND;
-//        goHome();
+        */
+        goHome();
+        
     }
 
     @Override
@@ -35,14 +36,13 @@ public class CarryHomeBehavior extends BaseBehavior {
         suppressed = true;
     }
 
-    @SuppressWarnings("Duplicates")
     private static void goHome() {
         int distance = Integer.MAX_VALUE;
+        String currentMove = "Stop";
 
         SensorMode seek = Fetchy.seekerSensor.getSeekMode();
 
-        while (true) {
-            Delay.msDelay(200);
+        while (distance>0) {
             float[] sample = new float[seek.sampleSize()];
             seek.fetchSample(sample, 0);
             int direction = (int) sample[0];
@@ -51,20 +51,30 @@ public class CarryHomeBehavior extends BaseBehavior {
             System.out.println("Distance: " + distance);
 
             if (direction > 5) {
+            	if(!currentMove.equals("Left")) {
                 Fetchy.rightMotor.backward();
                 Fetchy.leftMotor.stop(true);
+                currentMove = "Left";
+            	}
             } else if (direction < -5) {
+            	if(!currentMove.equals("Right")) {
                 Fetchy.leftMotor.backward();
                 Fetchy.rightMotor.stop(true);
+                currentMove = "Right";
+            	}
             } else {
-                if (distance < Integer.MAX_VALUE) {
-                    Fetchy.backward();
-                }
+            	if(!currentMove.equals("Backwards")) {
+            		if (distance < Integer.MAX_VALUE) {
+            			Fetchy.backward();
+            			currentMove = "Backwards";
+            		}
+            	}
             }
         }
-//        Fetchy.stop();
-//        Fetchy.letGo();
-//        Fetchy.requestQueue.remove(0);
+        Fetchy.stop();
+        Fetchy.letGo();
+        Fetchy.currentState = State.WAITING_FOR_COMMAND;
+        Fetchy.requestQueue.remove(0);
     }
 
 }

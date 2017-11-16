@@ -29,7 +29,6 @@ public class SearchBehavior extends BaseBehavior {
             Fetchy.forward(2000);
         }
         Fetchy.stop();
-        Fetchy.pilot.setAngularSpeed(Fetchy.pilot.getMaxAngularSpeed());
     }
 
 

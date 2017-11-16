@@ -46,9 +46,7 @@ public class Fetchy {
         // Initialize sensors
         seekerSensor = new EV3IRSensor(SensorPort.S2);
         colorSensor = new ColorSensorWrapper(SensorPort.S3);
-//        irSensor = new IRSensorWrapper(SensorPort.S4);
-
-        seekerSensor.getSeekMode();
+        irSensor = new IRSensorWrapper(SensorPort.S4);
 
         // Initialize grip motor
         gripMotor = new EV3MediumRegulatedMotor(MotorPort.A);
