@@ -13,6 +13,6 @@ public abstract class BaseBehavior implements Behavior {
     @OverridingMethodsMustInvokeSuper
     @Override
     public void action() {
-        System.out.println(getName());
+//        System.out.println(getName());
     }
 }

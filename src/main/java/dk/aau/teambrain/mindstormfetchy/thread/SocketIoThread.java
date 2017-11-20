@@ -52,6 +52,12 @@ public class SocketIoThread extends Thread {
                     e.printStackTrace();
                 }
             }
+        }).on("abort", new Emitter.Listener() {
+            @Override
+            public void call(Object... objects) {
+                Fetchy.currentState = dk.aau.teambrain.mindstormfetchy.State.WAITING_FOR_COMMAND;
+                Fetchy.requestQueue.remove(0);
+            }
         });
 
         System.out.println("Connecting to SocketIO server..");

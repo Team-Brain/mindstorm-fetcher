@@ -18,7 +18,7 @@ public class WaitForCommandBehavior extends BaseBehavior {
     public void action() {
         super.action();
         // TODO: Only for demo testing, in production remove this code
-        Fetchy.createDemoRequest();
+//        Fetchy.createDemoRequest();
     }
 
     @Override

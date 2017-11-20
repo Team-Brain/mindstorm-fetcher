@@ -74,8 +74,8 @@ public class Follow {
                 left.stop(true);
             } else {
                 if (distance < Integer.MAX_VALUE) {
-                    left.forward();
-                    right.forward();
+                    left.backward();
+                    right.backward();
                 } else {
                     left.stop(true);
                     right.stop(true);

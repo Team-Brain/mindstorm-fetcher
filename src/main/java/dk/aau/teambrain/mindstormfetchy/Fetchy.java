@@ -13,7 +13,7 @@ import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3IRSensor;
-import lejos.hardware.sensor.SensorMode;
+import lejos.robotics.RegulatedMotor;
 import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
@@ -37,8 +37,8 @@ public class Fetchy {
 
     public static State currentState;
 
-    public static EV3LargeRegulatedMotor leftMotor;
-    public static EV3LargeRegulatedMotor rightMotor;
+    public static RegulatedMotor leftMotor;
+    public static RegulatedMotor rightMotor;
 
     public static void init() {
         System.out.println("Initializing Fetchy");
@@ -161,6 +161,5 @@ public class Fetchy {
         }
         g.clear();
     }
-
 
 }
