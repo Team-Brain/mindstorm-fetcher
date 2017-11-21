@@ -1,6 +1,7 @@
 package dk.aau.teambrain.mindstormfetchy.behavior;
 
 import dk.aau.teambrain.mindstormfetchy.Fetchy;
+import dk.aau.teambrain.mindstormfetchy.Main;
 
 public class WaitForCommandBehavior extends BaseBehavior {
 
@@ -17,8 +18,9 @@ public class WaitForCommandBehavior extends BaseBehavior {
     @Override
     public void action() {
         super.action();
-        // TODO: Only for demo testing, in production remove this code
-//        Fetchy.createDemoRequest();
+        if (Main.DEBUG) {
+            Fetchy.createDemoRequest();
+        }
     }
 
     @Override

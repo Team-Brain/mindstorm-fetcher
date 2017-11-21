@@ -12,8 +12,7 @@ public class GoToObjectBehavior extends BaseBehavior {
 
     @Override
     public boolean takeControl() {
-        return !Fetchy.requestQueue.isEmpty()
-                && Fetchy.irSensor.getRange() < 60;
+        return !Fetchy.requestQueue.isEmpty() && Fetchy.irSensor.getRange() < 60;
     }
 
     @Override

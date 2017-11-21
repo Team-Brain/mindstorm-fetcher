@@ -5,6 +5,8 @@ import dk.aau.teambrain.mindstormfetchy.model.Request;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
 import dk.aau.teambrain.mindstormfetchy.utils.IRSensorWrapper;
 import lejos.hardware.Button;
+import lejos.hardware.Key;
+import lejos.hardware.KeyListener;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.Font;
 import lejos.hardware.lcd.GraphicsLCD;
@@ -17,7 +19,11 @@ import lejos.robotics.RegulatedMotor;
 import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
+import lejos.robotics.localization.OdometryPoseProvider;
+import lejos.robotics.localization.PoseProvider;
 import lejos.robotics.navigation.MovePilot;
+import lejos.robotics.navigation.Navigator;
+import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
@@ -40,6 +46,9 @@ public class Fetchy {
     public static RegulatedMotor leftMotor;
     public static RegulatedMotor rightMotor;
 
+    public static Navigator navigator;
+    public static PoseProvider poseProvider;
+
     public static void init() {
         System.out.println("Initializing Fetchy");
 
@@ -55,12 +64,14 @@ public class Fetchy {
         // Initialize pilot
         leftMotor = new EV3LargeRegulatedMotor(MotorPort.B);
         rightMotor = new EV3LargeRegulatedMotor(MotorPort.C);
-        Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 30.4).offset(-72);
-        Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 30.4).offset(72);
+        Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 30.7).offset(-75);
+        Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 30.7).offset(75);
         Chassis chassis = new WheeledChassis(new Wheel[]{leftWheel, rightWheel}, WheeledChassis.TYPE_DIFFERENTIAL);
         pilot = new MovePilot(chassis);
-        pilot.setLinearSpeed(50);
-
+        pilot.setLinearSpeed(75);
+        pilot.setAngularSpeed(30);
+        poseProvider = new OdometryPoseProvider(pilot);
+        navigator = new Navigator(pilot, poseProvider);
         // Initialize behaviours
         Behavior searchBeh = new SearchBehavior();
         Behavior goToBeh = new GoToObjectBehavior();
@@ -69,9 +80,22 @@ public class Fetchy {
         Behavior waitForCommandBeh = new WaitForCommandBehavior();
         Behavior[] bArray = {searchBeh, goToBeh, scanBeh, carryHomeBeh, waitForCommandBeh};
 
+
         Arbitrator arb = new Arbitrator(bArray);
         arb.go();
         System.out.println("Initialization complete");
+
+        Button.ENTER.addKeyListener(new KeyListener() {
+            @Override
+            public void keyPressed(Key k) {
+
+            }
+
+            @Override
+            public void keyReleased(Key k) {
+                turn(90);
+            }
+        });
 
     }
 
@@ -120,6 +144,11 @@ public class Fetchy {
         Request request = new Request();
         request.color = "Blue";
         Fetchy.requestQueue.add(request);
+    }
+
+    public static Waypoint getCurrentLocation() {
+        return new Waypoint(poseProvider.getPose().getX(),
+                poseProvider.getPose().getY());
     }
 
     // TODO: Create nice intro message

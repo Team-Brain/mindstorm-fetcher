@@ -3,6 +3,7 @@ package dk.aau.teambrain.mindstormfetchy.behavior;
 import dk.aau.teambrain.mindstormfetchy.Fetchy;
 import dk.aau.teambrain.mindstormfetchy.State;
 import lejos.hardware.sensor.SensorMode;
+import lejos.utility.Delay;
 
 public class CarryHomeBehavior extends BaseBehavior {
 
@@ -24,14 +25,13 @@ public class CarryHomeBehavior extends BaseBehavior {
     public void action() {
         super.action();
         suppressed = false;
-        /*Fetchy.turn180();
+        Fetchy.navigator.followPath(SearchBehavior.getSearchPath());
+        while (!Fetchy.navigator.pathCompleted() && !suppressed) {
+        }
+        SearchBehavior.clearSearchPath();
         Fetchy.letGo();
-        Fetchy.backward(2000);
-        Fetchy.turn180();
         Fetchy.requestQueue.remove(0);
-        */
-        goHome();
-
+        Fetchy.currentState = State.WAITING_FOR_COMMAND;
     }
 
     @Override
@@ -41,12 +41,12 @@ public class CarryHomeBehavior extends BaseBehavior {
 
     private static void goHome() {
         int distance = Integer.MAX_VALUE;
-//        String currentMove = "Stop";
 
         SensorMode seek = Fetchy.seekerSensor.getSeekMode();
         MovementState state = MovementState.STOP;
 
         while (distance > 0 && !suppressed) {
+            Delay.msDelay(200);
             float[] sample = new float[seek.sampleSize()];
             seek.fetchSample(sample, 0);
             int direction = (int) sample[0];
