@@ -18,6 +18,7 @@ public class GoToObjectBehavior extends BaseBehavior {
     @Override
     public void action() {
         super.action();
+        SearchBehavior.printLocation(Fetchy.getCurrentLocation());
         suppressed = false;
         Sound.beep();
         Fetchy.forward();
@@ -25,6 +26,7 @@ public class GoToObjectBehavior extends BaseBehavior {
             // ignored
         }
         Fetchy.stop();
+        SearchBehavior.printLocation(Fetchy.getCurrentLocation());
     }
 
     @Override

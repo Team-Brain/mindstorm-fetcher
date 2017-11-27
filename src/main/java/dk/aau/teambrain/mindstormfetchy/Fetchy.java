@@ -47,7 +47,7 @@ public class Fetchy {
     public static RegulatedMotor rightMotor;
 
     public static Navigator navigator;
-    public static PoseProvider poseProvider;
+//    public static PoseProvider poseProvider;
 
     public static void init() {
         System.out.println("Initializing Fetchy");
@@ -70,15 +70,16 @@ public class Fetchy {
         pilot = new MovePilot(chassis);
         pilot.setLinearSpeed(75);
         pilot.setAngularSpeed(30);
-        poseProvider = new OdometryPoseProvider(pilot);
-        navigator = new Navigator(pilot, poseProvider);
+//        poseProvider = new OdometryPoseProvider(pilot);
+        navigator = new Navigator(pilot, chassis.getPoseProvider());
         // Initialize behaviours
         Behavior searchBeh = new SearchBehavior();
         Behavior goToBeh = new GoToObjectBehavior();
         Behavior scanBeh = new ScanObjectBehavior();
         Behavior carryHomeBeh = new CarryHomeBehavior();
+        Behavior carryToUserBeh = new CarryToUserBehavior();
         Behavior waitForCommandBeh = new WaitForCommandBehavior();
-        Behavior[] bArray = {searchBeh, goToBeh, scanBeh, carryHomeBeh, waitForCommandBeh};
+        Behavior[] bArray = {searchBeh, goToBeh, scanBeh, carryHomeBeh, carryToUserBeh, waitForCommandBeh};
 
 
         Arbitrator arb = new Arbitrator(bArray);
@@ -134,21 +135,30 @@ public class Fetchy {
     public static void turn(double angle) {
         pilot.rotate(angle);
     }
-
-    public static void turn180() {
-        pilot.rotate(180);
+    
+    public static void leaveOnTheSide() {
+    	Delay.msDelay(200);
+    	turn(90);
+    	SearchBehavior.printLocation(Fetchy.getCurrentLocation());
+    	pilot.travel(100);
+    	SearchBehavior.printLocation(Fetchy.getCurrentLocation());
+    	letGo();
+    	pilot.travel(-100);
+    	SearchBehavior.printLocation(Fetchy.getCurrentLocation());
+    	turn(-90);
+    	SearchBehavior.printLocation(Fetchy.getCurrentLocation());
     }
 
     public static void createDemoRequest() {
         Delay.msDelay(2000);
         Request request = new Request();
-        request.color = "Blue";
+        request.color = "Red";
         Fetchy.requestQueue.add(request);
     }
 
     public static Waypoint getCurrentLocation() {
-        return new Waypoint(poseProvider.getPose().getX(),
-                poseProvider.getPose().getY());
+        return new Waypoint(navigator.getPoseProvider().getPose().getX(),
+        		navigator.getPoseProvider().getPose().getY());
     }
 
     // TODO: Create nice intro message
@@ -190,5 +200,7 @@ public class Fetchy {
         }
         g.clear();
     }
+    
+    
 
 }

@@ -76,6 +76,10 @@ public class SearchBehavior extends BaseBehavior {
         System.out.println(((int) location.x) + ":" + ((int) location.y));
         searchPath.add(0, location);
     }
+    
+    public static void printLocation(Waypoint location) {
+        System.out.println(((int) location.x) + ":" + ((int) location.y));
+    }
 
     public static Path getSearchPath() {
         return searchPath;

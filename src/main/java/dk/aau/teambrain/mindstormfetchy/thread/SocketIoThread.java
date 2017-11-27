@@ -55,8 +55,8 @@ public class SocketIoThread extends Thread {
         }).on("abort", new Emitter.Listener() {
             @Override
             public void call(Object... objects) {
-                Fetchy.currentState = dk.aau.teambrain.mindstormfetchy.State.WAITING_FOR_COMMAND;
-                Fetchy.requestQueue.remove(0);
+                Fetchy.currentState = dk.aau.teambrain.mindstormfetchy.State.ABORT;
+//                Fetchy.requestQueue.remove(0);
             }
         });
 

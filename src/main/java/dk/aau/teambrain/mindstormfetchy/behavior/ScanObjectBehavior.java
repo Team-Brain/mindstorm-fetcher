@@ -31,18 +31,7 @@ public class ScanObjectBehavior extends BaseBehavior {
             Fetchy.currentState = State.CARRYING_HOME;
         } else {
             Fetchy.grab();
-            Fetchy.poseProvider.getPose();
-            Fetchy.turn(90);
-            Fetchy.poseProvider.getPose();
-//            Fetchy.forward(2000);
-            Fetchy.pilot.travel(100);
-            Fetchy.poseProvider.getPose();
-            Fetchy.letGo();
-//            Fetchy.backward(2000);
-            Fetchy.pilot.travel(-100);
-            Fetchy.poseProvider.getPose();
-            Fetchy.turn(-90);
-            Fetchy.poseProvider.getPose();
+            Fetchy.leaveOnTheSide();
         }
 
     }
