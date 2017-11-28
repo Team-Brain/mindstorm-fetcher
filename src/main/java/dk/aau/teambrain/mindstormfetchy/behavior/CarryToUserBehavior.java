@@ -31,35 +31,30 @@ public class CarryToUserBehavior extends BaseBehavior {
 	private static void goHome() {
 		int distance = Integer.MAX_VALUE;
 		SensorMode seek = Fetchy.seekerSensor.getSeekMode();
+		float[] sample = new float[seek.sampleSize()];
+		seek.fetchSample(sample, 0);
 
-		while (distance > 0 && !suppressed) {
-			Delay.msDelay(200);
-			float[] sample = new float[seek.sampleSize()];
-			seek.fetchSample(sample, 0);
-			int direction = (int) sample[0];
-			System.out.println("Direction: " + direction);
-			distance = (int) sample[1];
-			System.out.println("Distance: " + distance);
-			if (direction > 2) {
-				Fetchy.rightMotor.backward();
-				Fetchy.leftMotor.stop(true);
-			} else if (direction < -2) {
-				Fetchy.leftMotor.backward();
-				Fetchy.rightMotor.stop(true);
-			} else {
-				if (distance < Integer.MAX_VALUE) {
-					Fetchy.backward();
-					while (distance > 0 && !suppressed) {
-						seek.fetchSample(sample, 0);
-						distance = (int) sample[1];
-						System.out.println("Distance: " + distance);
-					}
-				}
+		int direction = (int) sample[0];
+		System.out.println("Direction: " + direction);
+
+		distance = (int) sample[1];
+		System.out.println("Distance: " + distance);
+
+		Fetchy.pilot.rotate(direction);
+
+		Delay.msDelay(200);
+		if (distance < Integer.MAX_VALUE) {
+			Fetchy.backward();
+			while (distance > 0 && !suppressed) {
+				seek.fetchSample(sample, 0);
+				distance = (int) sample[1];
+				System.out.println("Distance: " + distance);
 			}
 		}
 		Fetchy.stop();
 		Fetchy.turn(180);
 		Fetchy.letGo();
+		Fetchy.navigator.goTo(0, 0);
 		Fetchy.currentState = State.WAITING_FOR_COMMAND;
 		Fetchy.requestQueue.remove(0);
 	}
