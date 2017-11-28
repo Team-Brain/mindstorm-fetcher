@@ -24,11 +24,11 @@ public class ScanObjectBehavior extends BaseBehavior {
     public void action() {
         super.action();
         suppressed = false;
-        Fetchy.pilot.travel(20);
+        Fetchy.travel(20);
         Delay.msDelay(1000);
         if (checkColor()) {
             Fetchy.grab();
-            Fetchy.currentState = State.CARRYING_HOME;
+            Fetchy.currentState = State.GOING_HOME;
         } else {
             Fetchy.grab();
             Fetchy.leaveOnTheSide();

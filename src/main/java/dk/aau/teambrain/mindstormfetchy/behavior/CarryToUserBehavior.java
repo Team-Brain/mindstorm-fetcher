@@ -20,8 +20,9 @@ public class CarryToUserBehavior extends BaseBehavior {
 	public void action() {
 		super.action();
 		suppressed = false;
-		goHome();
-	}
+//		goHome();
+        Fetchy.letGo();
+    }
 
 	@Override
 	protected String getName() {
@@ -29,7 +30,6 @@ public class CarryToUserBehavior extends BaseBehavior {
 	}
 
 	private static void goHome() {
-		int distance = Integer.MAX_VALUE;
 		SensorMode seek = Fetchy.seekerSensor.getSeekMode();
 		float[] sample = new float[seek.sampleSize()];
 		seek.fetchSample(sample, 0);
@@ -37,12 +37,11 @@ public class CarryToUserBehavior extends BaseBehavior {
 		int direction = (int) sample[0];
 		System.out.println("Direction: " + direction);
 
-		distance = (int) sample[1];
+		int distance = (int) sample[1];
 		System.out.println("Distance: " + distance);
 
-		Fetchy.pilot.rotate(direction);
+		Fetchy.turn(direction);
 
-		Delay.msDelay(200);
 		if (distance < Integer.MAX_VALUE) {
 			Fetchy.backward();
 			while (distance > 0 && !suppressed) {
@@ -51,6 +50,7 @@ public class CarryToUserBehavior extends BaseBehavior {
 				System.out.println("Distance: " + distance);
 			}
 		}
+
 		Fetchy.stop();
 		Fetchy.turn(180);
 		Fetchy.letGo();
