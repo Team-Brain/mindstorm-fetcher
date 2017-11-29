@@ -8,7 +8,7 @@ import lejos.utility.Delay;
 
 public class ScanObjectBehavior extends BaseBehavior {
 
-    private static final int SCAN_COLOR_TRIES = 20;
+    private static final int SCAN_COLOR_TRIES = 10;
     private static final int SCAN_COLOR_DELAY = 200;
     private static final float MIN_SUCCESS_THRESHOLD = 0.75f;
 

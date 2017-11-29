@@ -4,6 +4,9 @@ import dk.aau.teambrain.mindstormfetchy.behavior.*;
 import dk.aau.teambrain.mindstormfetchy.model.Request;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
 import dk.aau.teambrain.mindstormfetchy.utils.IRSensorWrapper;
+import lejos.hardware.Button;
+import lejos.hardware.Key;
+import lejos.hardware.KeyListener;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.port.MotorPort;
@@ -46,18 +49,18 @@ public class Fetchy {
         irSensor = new IRSensorWrapper(SensorPort.S4);
 
         // Initialize grip motor
-        gripMotor = new EV3MediumRegulatedMotor(MotorPort.A);
+        gripMotor = new EV3MediumRegulatedMotor(MotorPort.B);
         gripMotor.setSpeed(200);
 
         // Initialize pilot
-        RegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.B);
-        RegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.C);
-        Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 30.7).offset(-75);
-        Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 30.7).offset(75);
+        RegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.A);
+        RegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.D);
+        Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 32.5).offset(-80);
+        Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 32.5).offset(80);
         Chassis chassis = new WheeledChassis(new Wheel[]{leftWheel, rightWheel}, WheeledChassis.TYPE_DIFFERENTIAL);
         pilot = new MovePilot(chassis);
         pilot.setLinearSpeed(75);
-        pilot.setAngularSpeed(30);
+        pilot.setAngularSpeed(50);
         navigator = new Navigator(pilot, chassis.getPoseProvider());
 
         // Initialize behaviours
@@ -71,6 +74,32 @@ public class Fetchy {
 
         Arbitrator arb = new Arbitrator(bArray);
         arb.go();
+        
+        Button.UP.addKeyListener(new KeyListener() {
+        	@Override
+			public void keyReleased(Key k) {
+				pilot.travel(1500);
+			}
+			
+			@Override
+			public void keyPressed(Key k) {
+				// TODO Auto-generated method stub
+				
+			}
+        });
+        Button.ENTER.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyReleased(Key k) {
+				pilot.rotate(90);
+			}
+			
+			@Override
+			public void keyPressed(Key k) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
         System.out.println("Initialization complete");
     }
