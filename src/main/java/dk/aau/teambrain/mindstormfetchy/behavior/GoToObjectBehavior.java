@@ -24,6 +24,7 @@ public class GoToObjectBehavior extends BaseBehavior {
         while (!suppressed) {
             // ignored
         }
+        Fetchy.travel(20);
         Fetchy.stop();
     }
 

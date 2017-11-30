@@ -34,7 +34,7 @@ public class Fetchy {
     private static EV3MediumRegulatedMotor gripMotor;
     public static List<Request> requestQueue = new ArrayList<>();
 
-    private static MovePilot pilot;
+    public static MovePilot pilot;
 
     public static State currentState;
 
@@ -43,7 +43,7 @@ public class Fetchy {
     public static void init() {
         System.out.println("Initializing Fetchy");
 
-        // Initialize sensors
+//        // Initialize sensors
         seekerSensor = new EV3IRSensor(SensorPort.S2);
         colorSensor = new ColorSensorWrapper(SensorPort.S3);
         irSensor = new IRSensorWrapper(SensorPort.S4);
@@ -55,15 +55,15 @@ public class Fetchy {
         // Initialize pilot
         RegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.A);
         RegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.D);
-        Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 32.5).offset(-80);
-        Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 32.5).offset(80);
+        Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 32.5).offset(-78);
+        Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 32.5).offset(78);
         Chassis chassis = new WheeledChassis(new Wheel[]{leftWheel, rightWheel}, WheeledChassis.TYPE_DIFFERENTIAL);
         pilot = new MovePilot(chassis);
-        pilot.setLinearSpeed(75);
-        pilot.setAngularSpeed(50);
+        pilot.setLinearSpeed(100);
+        pilot.setAngularSpeed(75);
         navigator = new Navigator(pilot, chassis.getPoseProvider());
 
-        // Initialize behaviours
+//        // Initialize behaviours
         Behavior searchBeh = new SearchBehavior();
         Behavior goToBeh = new GoToObjectBehavior();
         Behavior scanBeh = new ScanObjectBehavior();
@@ -74,38 +74,67 @@ public class Fetchy {
 
         Arbitrator arb = new Arbitrator(bArray);
         arb.go();
-        
+
         Button.UP.addKeyListener(new KeyListener() {
-        	@Override
-			public void keyReleased(Key k) {
-				pilot.travel(1500);
-			}
-			
-			@Override
-			public void keyPressed(Key k) {
-				// TODO Auto-generated method stub
-				
-			}
+            @Override
+            public void keyReleased(Key k) {
+                pilot.travel(1500);
+            }
+
+            @Override
+            public void keyPressed(Key k) {
+                // TODO Auto-generated method stub
+            }
         });
+
         Button.ENTER.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyReleased(Key k) {
-				pilot.rotate(90);
-			}
-			
-			@Override
-			public void keyPressed(Key k) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+            @Override
+            public void keyPressed(Key k) {
+                for (int i = 0; i < 8; i++) {
+                    pilot.rotate(90);
+                }
+            }
+
+            @Override
+            public void keyReleased(Key k) {
+            }
+        });
+
+        Button.RIGHT.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyReleased(Key k) {
+                pilot.rotate(90);
+            }
+
+            @Override
+            public void keyPressed(Key k) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        Button.LEFT.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyReleased(Key k) {
+                pilot.rotate(-90);
+            }
+
+            @Override
+            public void keyPressed(Key k) {
+                // TODO Auto-generated method stub
+            }
+        });
 
         System.out.println("Initialization complete");
     }
 
     public static void travel(int distance) {
         pilot.travel(distance);
+    }
+
+    public static void travel(int distance, boolean immediateReturn) {
+        pilot.travel(distance, immediateReturn);
     }
 
     public static void forward() {
@@ -121,15 +150,32 @@ public class Fetchy {
     }
 
     public static void grab() {
-        gripMotor.rotate(600);
+        gripMotor.rotate(500);
     }
 
     public static void letGo() {
-        gripMotor.rotate(-600);
+        gripMotor.rotate(-500);
     }
 
     public static void turn(double angle) {
         pilot.rotate(angle);
+    }
+
+    public static void turn(double angle, boolean immediateReturn) {
+        pilot.rotate(angle, immediateReturn);
+    }
+
+    public static void rotateRight() {
+        pilot.rotateRight();
+    }
+
+    public static void rotateLeft() {
+        pilot.rotateLeft();
+    }
+
+
+    public static void goToStart() {
+        navigator.goTo(new Waypoint(0, 0, 0));
     }
 
     public static Waypoint getCurrentLocation() {
@@ -140,14 +186,10 @@ public class Fetchy {
     public static void leaveOnTheSide() {
         Delay.msDelay(200);
         turn(90);
-//        printCurrentLocation();
         pilot.travel(100);
-//        printCurrentLocation();
         letGo();
         pilot.travel(-100);
-//        printCurrentLocation();
         turn(-90);
-//        printCurrentLocation();
     }
 
     public static void printCurrentLocation() {

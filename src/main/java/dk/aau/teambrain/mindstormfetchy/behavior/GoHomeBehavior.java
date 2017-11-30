@@ -2,7 +2,6 @@ package dk.aau.teambrain.mindstormfetchy.behavior;
 
 import dk.aau.teambrain.mindstormfetchy.Fetchy;
 import dk.aau.teambrain.mindstormfetchy.State;
-import lejos.robotics.navigation.Waypoint;
 
 public class GoHomeBehavior extends BaseBehavior {
 
@@ -23,16 +22,10 @@ public class GoHomeBehavior extends BaseBehavior {
         if (Fetchy.currentState == State.ABORT) {
             Fetchy.leaveOnTheSide();
         }
-        Fetchy.navigator.goTo(new Waypoint(0,0, 0));
-//        Fetchy.navigator.followPath(SearchBehavior.getSearchPath());
+        Fetchy.goToStart();
         while (!Fetchy.navigator.pathCompleted() && !suppressed) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Thread.yield();
         }
-        SearchBehavior.clearSearchPath();
         if (Fetchy.currentState != State.ABORT) {
             Fetchy.currentState = State.CARRY_TO_USER;
         } else {

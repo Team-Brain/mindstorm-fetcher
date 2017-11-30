@@ -9,7 +9,7 @@ import lejos.utility.Delay;
 public class ScanObjectBehavior extends BaseBehavior {
 
     private static final int SCAN_COLOR_TRIES = 10;
-    private static final int SCAN_COLOR_DELAY = 200;
+    private static final int SCAN_COLOR_DELAY = 100;
     private static final float MIN_SUCCESS_THRESHOLD = 0.75f;
 
     @Override
@@ -24,8 +24,7 @@ public class ScanObjectBehavior extends BaseBehavior {
     public void action() {
         super.action();
         suppressed = false;
-        Fetchy.travel(20);
-        Delay.msDelay(1000);
+        Delay.msDelay(100);
         if (checkColor()) {
             Fetchy.grab();
             Fetchy.currentState = State.GOING_HOME;

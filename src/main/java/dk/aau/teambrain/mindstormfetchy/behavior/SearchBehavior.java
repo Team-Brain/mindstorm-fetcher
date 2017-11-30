@@ -6,8 +6,6 @@ import lejos.robotics.pathfinding.Path;
 
 public class SearchBehavior extends BaseBehavior {
 
-    private static final Path searchPath = new Path();
-
     @Override
     protected String getName() {
         return "Search";
@@ -24,14 +22,9 @@ public class SearchBehavior extends BaseBehavior {
     public void action() {
         super.action();
         suppressed = false;
-        addLocation(Fetchy.getCurrentLocation());
         Fetchy.forward();
         while (!suppressed) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Thread.yield();
             // TODO: Figure out looking around
 //            rotateOrStop(15);
 //            rotateOrStop(-30);
@@ -39,20 +32,6 @@ public class SearchBehavior extends BaseBehavior {
 //            forwardOrStop(2000);
         }
         Fetchy.stop();
-    }
-
-    public static void addLocation(Waypoint location) {
-        System.out.println(((int) location.x) + ":" + ((int) location.y));
-        searchPath.add(0, location);
-    }
-
-
-    public static Path getSearchPath() {
-        return searchPath;
-    }
-
-    public static void clearSearchPath() {
-        searchPath.clear();
     }
 
 //    private void forwardOrStop(int millis) {
