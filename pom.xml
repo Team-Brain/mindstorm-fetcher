@@ -7,23 +7,11 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <dependencies>
-        <!--<dependency>-->
-            <!--<groupId>ev3classes</groupId>-->
-            <!--<artifactId>ev3classes</artifactId>-->
-            <!--<version>1.0</version>-->
-            <!--<scope>system</scope>-->
-            <!--<systemPath>${lejos.install.dir}\\lib\\ev3\\ev3classes.jar</systemPath>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>com.github.bdeneuter</groupId>
             <artifactId>lejos-ev3-api</artifactId>
             <version>0.9.1-beta</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.http-client</groupId>
-            <artifactId>google-http-client</artifactId>
-            <version>1.23.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.http-client</groupId>
@@ -38,7 +26,7 @@
     </dependencies>
 
     <build>
-            <plugins>
+        <plugins>
             <!-- to point our java 7 compatibility -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
