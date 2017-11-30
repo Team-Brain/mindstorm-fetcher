@@ -7,26 +7,23 @@ public class GoHomeBehavior extends BaseBehavior {
 
     @Override
     protected String getName() {
-        return "CarryHome";
+        return "GoHome";
     }
 
     @Override
     public boolean takeControl() {
-        return (Fetchy.currentState == State.GOING_HOME) || (Fetchy.currentState == State.ABORT);
+        return Fetchy.currentState == State.GOING_HOME;
     }
 
     @Override
     public void action() {
         super.action();
         suppressed = false;
-        if (Fetchy.currentState == State.ABORT) {
-            Fetchy.leaveOnTheSide();
-        }
         Fetchy.goToStart();
         while (!Fetchy.navigator.pathCompleted() && !suppressed) {
             Thread.yield();
         }
-        if (Fetchy.currentState != State.ABORT) {
+        if (Fetchy.carryingObject) {
             Fetchy.currentState = State.CARRY_TO_USER;
         } else {
             Fetchy.currentState = State.WAITING_FOR_COMMAND;

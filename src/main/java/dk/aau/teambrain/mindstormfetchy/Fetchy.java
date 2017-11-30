@@ -4,9 +4,6 @@ import dk.aau.teambrain.mindstormfetchy.behavior.*;
 import dk.aau.teambrain.mindstormfetchy.model.Request;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
 import dk.aau.teambrain.mindstormfetchy.utils.IRSensorWrapper;
-import lejos.hardware.Button;
-import lejos.hardware.Key;
-import lejos.hardware.KeyListener;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.port.MotorPort;
@@ -40,6 +37,8 @@ public class Fetchy {
 
     public static Navigator navigator;
 
+    public static boolean carryingObject = false;
+
     public static void init() {
         System.out.println("Initializing Fetchy");
 
@@ -51,6 +50,7 @@ public class Fetchy {
         // Initialize grip motor
         gripMotor = new EV3MediumRegulatedMotor(MotorPort.B);
         gripMotor.setSpeed(200);
+        letGo();
 
         // Initialize pilot
         RegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.A);
@@ -60,7 +60,7 @@ public class Fetchy {
         Chassis chassis = new WheeledChassis(new Wheel[]{leftWheel, rightWheel}, WheeledChassis.TYPE_DIFFERENTIAL);
         pilot = new MovePilot(chassis);
         pilot.setLinearSpeed(100);
-        pilot.setAngularSpeed(75);
+        pilot.setAngularSpeed(50);
         navigator = new Navigator(pilot, chassis.getPoseProvider());
 
 //        // Initialize behaviours
@@ -69,62 +69,12 @@ public class Fetchy {
         Behavior scanBeh = new ScanObjectBehavior();
         Behavior goHomeBehavior = new GoHomeBehavior();
         Behavior carryToUserBeh = new CarryToUserBehavior();
+        Behavior abortBeh = new AbortBehavior();
         Behavior waitForCommandBeh = new WaitForCommandBehavior();
-        Behavior[] bArray = {searchBeh, goToBeh, scanBeh, goHomeBehavior, carryToUserBeh, waitForCommandBeh};
+        Behavior[] bArray = {searchBeh, goToBeh, scanBeh, goHomeBehavior, carryToUserBeh, abortBeh, waitForCommandBeh};
 
         Arbitrator arb = new Arbitrator(bArray);
         arb.go();
-
-        Button.UP.addKeyListener(new KeyListener() {
-            @Override
-            public void keyReleased(Key k) {
-                pilot.travel(1500);
-            }
-
-            @Override
-            public void keyPressed(Key k) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-        Button.ENTER.addKeyListener(new KeyListener() {
-            @Override
-            public void keyPressed(Key k) {
-                for (int i = 0; i < 8; i++) {
-                    pilot.rotate(90);
-                }
-            }
-
-            @Override
-            public void keyReleased(Key k) {
-            }
-        });
-
-        Button.RIGHT.addKeyListener(new KeyListener() {
-
-            @Override
-            public void keyReleased(Key k) {
-                pilot.rotate(90);
-            }
-
-            @Override
-            public void keyPressed(Key k) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-        Button.LEFT.addKeyListener(new KeyListener() {
-
-            @Override
-            public void keyReleased(Key k) {
-                pilot.rotate(-90);
-            }
-
-            @Override
-            public void keyPressed(Key k) {
-                // TODO Auto-generated method stub
-            }
-        });
 
         System.out.println("Initialization complete");
     }
@@ -151,10 +101,12 @@ public class Fetchy {
 
     public static void grab() {
         gripMotor.rotate(500);
+        carryingObject = true;
     }
 
     public static void letGo() {
         gripMotor.rotate(-500);
+        carryingObject = false;
     }
 
     public static void turn(double angle) {
@@ -183,13 +135,15 @@ public class Fetchy {
                 navigator.getPoseProvider().getPose().getY());
     }
 
-    public static void leaveOnTheSide() {
+    public static void leaveOnTheSide(boolean turnToStartAngle) {
         Delay.msDelay(200);
         turn(90);
         pilot.travel(100);
         letGo();
         pilot.travel(-100);
-        turn(-90);
+        if (turnToStartAngle) {
+            turn(-90);
+        }
     }
 
     public static void printCurrentLocation() {

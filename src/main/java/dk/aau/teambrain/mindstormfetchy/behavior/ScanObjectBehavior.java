@@ -24,13 +24,14 @@ public class ScanObjectBehavior extends BaseBehavior {
     public void action() {
         super.action();
         suppressed = false;
+        Fetchy.travel(20);
         Delay.msDelay(100);
         if (checkColor()) {
             Fetchy.grab();
             Fetchy.currentState = State.GOING_HOME;
         } else {
             Fetchy.grab();
-            Fetchy.leaveOnTheSide();
+            Fetchy.leaveOnTheSide(true);
         }
 
     }
