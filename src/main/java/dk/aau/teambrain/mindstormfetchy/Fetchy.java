@@ -4,6 +4,7 @@ import dk.aau.teambrain.mindstormfetchy.behavior.*;
 import dk.aau.teambrain.mindstormfetchy.model.Request;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
 import dk.aau.teambrain.mindstormfetchy.utils.IRSensorWrapper;
+import dk.aau.teambrain.mindstormfetchy.utils.Log;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.port.MotorPort;
@@ -28,19 +29,19 @@ public class Fetchy {
     public static ColorSensorWrapper colorSensor;
     public static IRSensorWrapper irSensor;
     public static EV3IRSensor seekerSensor;
+
     private static EV3MediumRegulatedMotor gripMotor;
 
-    public static MovePilot pilot;
-    public static Navigator navigator;
+    private static MovePilot pilot;
+    private static Navigator navigator;
 
-    public static List<Request> requestQueue = new ArrayList<>();
+    private static List<Request> requestQueue = new ArrayList<>();
 
     public static State currentState;
-
     public static boolean carryingObject = false;
 
     public static void init() {
-        System.out.println("Initializing Fetchy");
+        Log.i("Initializing Fetchy");
 
 //        // Initialize sensors
         seekerSensor = new EV3IRSensor(SensorPort.S2);
@@ -75,7 +76,7 @@ public class Fetchy {
         Arbitrator arb = new Arbitrator(bArray);
         arb.go();
 
-        System.out.println("Initialization complete");
+        Log.i("Initialization complete");
     }
 
     public static void travel(int distance) {
@@ -117,9 +118,12 @@ public class Fetchy {
         navigator.goTo(new Waypoint(0, 0, 0));
     }
 
-    public static Waypoint getCurrentLocation() {
-        return new Waypoint(navigator.getPoseProvider().getPose().getX(),
-                navigator.getPoseProvider().getPose().getY());
+    public static boolean pathCompleted() {
+        return navigator.pathCompleted();
+    }
+
+    public static void setAngularSpeed(double speed) {
+        pilot.setAngularSpeed(speed);
     }
 
     public static void leaveOnTheSide(boolean turnToStartAngle) {
@@ -131,14 +135,6 @@ public class Fetchy {
         if (turnToStartAngle) {
             turn(-90);
         }
-    }
-
-    public static void printCurrentLocation() {
-        printLocation(Fetchy.getCurrentLocation());
-    }
-
-    public static void printLocation(Waypoint location) {
-        System.out.println(((int) location.x) + ":" + ((int) location.y));
     }
 
     public static void createDemoRequest() {
@@ -162,5 +158,19 @@ public class Fetchy {
             throw new IllegalArgumentException("No requests in the queue.");
         }
         return requestQueue.get(0);
+    }
+
+    public static void onNewRequest(Request request) {
+        Fetchy.requestQueue.add(request);
+    }
+
+    public static void onAbort() {
+        Fetchy.currentState = State.ABORT;
+        Fetchy.requestQueue.clear();
+    }
+
+    public static void onAbortAll() {
+        Fetchy.currentState = State.ABORT;
+        Fetchy.requestQueue.clear();
     }
 }

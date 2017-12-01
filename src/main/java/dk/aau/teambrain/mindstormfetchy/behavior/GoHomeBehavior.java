@@ -20,7 +20,7 @@ public class GoHomeBehavior extends BaseBehavior {
         super.action();
         suppressed = false;
         Fetchy.goToStart();
-        while (!Fetchy.navigator.pathCompleted() && !suppressed) {
+        while (!Fetchy.pathCompleted() && !suppressed) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {

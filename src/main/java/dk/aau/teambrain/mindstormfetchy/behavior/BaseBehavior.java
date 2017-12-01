@@ -1,5 +1,6 @@
 package dk.aau.teambrain.mindstormfetchy.behavior;
 
+import dk.aau.teambrain.mindstormfetchy.utils.Log;
 import lejos.robotics.subsumption.Behavior;
 
 import javax.annotation.OverridingMethodsMustInvokeSuper;
@@ -13,6 +14,6 @@ public abstract class BaseBehavior implements Behavior {
     @OverridingMethodsMustInvokeSuper
     @Override
     public void action() {
-        System.out.println(getName());
+        Log.d(getName());
     }
 }

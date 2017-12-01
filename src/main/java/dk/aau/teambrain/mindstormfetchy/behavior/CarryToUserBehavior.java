@@ -2,6 +2,7 @@ package dk.aau.teambrain.mindstormfetchy.behavior;
 
 import dk.aau.teambrain.mindstormfetchy.Fetchy;
 import dk.aau.teambrain.mindstormfetchy.State;
+import dk.aau.teambrain.mindstormfetchy.utils.Log;
 import lejos.hardware.sensor.SensorMode;
 import lejos.utility.Delay;
 import lejos.utility.Stopwatch;
@@ -35,7 +36,7 @@ public class CarryToUserBehavior extends BaseBehavior {
             Fetchy.travel(-100);
             Fetchy.goToStart();
         }
-        while (!Fetchy.navigator.pathCompleted() && !suppressed) {
+        while (!Fetchy.pathCompleted() && !suppressed) {
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {
@@ -56,7 +57,7 @@ public class CarryToUserBehavior extends BaseBehavior {
         while (direction == 0 && !suppressed) {
             seek.fetchSample(sample, 0);
             direction = (int) sample[0];
-            System.out.println("Direction: " + direction);
+            Log.d("Direction: " + direction);
             Delay.msDelay(100);
             if (stopwatch.elapsed() > TIMEOUT_BEACON_SIGNAL) {
                 Fetchy.currentState = State.ABORT;
@@ -67,7 +68,7 @@ public class CarryToUserBehavior extends BaseBehavior {
             return;
         }
 
-        Fetchy.pilot.setAngularSpeed(20);
+        Fetchy.setAngularSpeed(20);
 
         // Turn around
         if (direction > 1) {
@@ -82,7 +83,7 @@ public class CarryToUserBehavior extends BaseBehavior {
         }
 
         Fetchy.stop();
-        Fetchy.pilot.setAngularSpeed(75);
+        Fetchy.setAngularSpeed(75);
 
         if (!suppressed) {
             Fetchy.turn(direction);
