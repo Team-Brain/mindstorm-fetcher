@@ -5,13 +5,37 @@ import com.google.api.client.util.Key;
 public class Request {
 
     @Key
-    public String action;
+    private String action;
 
     @Key
-    public String color;
+    private String color;
 
     @Key
-    public String object;
+    private String object;
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setObject(String object) {
+        this.object = object;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getObject() {
+        return object;
+    }
 
     @Override
     public String toString() {

@@ -6,7 +6,7 @@ import lejos.utility.Stopwatch;
 
 public class SearchBehavior extends BaseBehavior {
 
-    private static final int TIMEOUT_SEARCH = 7 * 1000;
+    private static final int TIMEOUT_SEARCH = 20 * 1000;
 
     @Override
     protected String getName() {
@@ -14,7 +14,7 @@ public class SearchBehavior extends BaseBehavior {
     }
 
     public boolean takeControl() {
-        return !Fetchy.requestQueue.isEmpty();
+        return Fetchy.hasRequest();
     }
 
     public void suppress() {
@@ -27,10 +27,14 @@ public class SearchBehavior extends BaseBehavior {
         suppressed = false;
         Fetchy.forward();
         while (!suppressed) {
-            if (stopwatch.elapsed() > TIMEOUT_SEARCH) {
-                Fetchy.currentState = State.ABORT;
+            try {
+                if (stopwatch.elapsed() > TIMEOUT_SEARCH) {
+                    Fetchy.currentState = State.ABORT;
+                }
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            Thread.yield();
         }
         Fetchy.stop();
     }

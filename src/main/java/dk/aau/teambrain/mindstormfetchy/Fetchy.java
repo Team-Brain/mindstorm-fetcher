@@ -29,13 +29,13 @@ public class Fetchy {
     public static IRSensorWrapper irSensor;
     public static EV3IRSensor seekerSensor;
     private static EV3MediumRegulatedMotor gripMotor;
-    public static List<Request> requestQueue = new ArrayList<>();
 
     public static MovePilot pilot;
+    public static Navigator navigator;
+
+    public static List<Request> requestQueue = new ArrayList<>();
 
     public static State currentState;
-
-    public static Navigator navigator;
 
     public static boolean carryingObject = false;
 
@@ -65,13 +65,12 @@ public class Fetchy {
 
 //        // Initialize behaviours
         Behavior searchBeh = new SearchBehavior();
-        Behavior goToBeh = new GoToObjectBehavior();
         Behavior scanBeh = new ScanObjectBehavior();
         Behavior goHomeBehavior = new GoHomeBehavior();
         Behavior carryToUserBeh = new CarryToUserBehavior();
         Behavior abortBeh = new AbortBehavior();
         Behavior waitForCommandBeh = new WaitForCommandBehavior();
-        Behavior[] bArray = {searchBeh, goToBeh, scanBeh, goHomeBehavior, carryToUserBeh, abortBeh, waitForCommandBeh};
+        Behavior[] bArray = {searchBeh, scanBeh, goHomeBehavior, carryToUserBeh, abortBeh, waitForCommandBeh};
 
         Arbitrator arb = new Arbitrator(bArray);
         arb.go();
@@ -81,10 +80,6 @@ public class Fetchy {
 
     public static void travel(int distance) {
         pilot.travel(distance);
-    }
-
-    public static void travel(int distance, boolean immediateReturn) {
-        pilot.travel(distance, immediateReturn);
     }
 
     public static void forward() {
@@ -115,14 +110,6 @@ public class Fetchy {
 
     public static void turn(double angle, boolean immediateReturn) {
         pilot.rotate(angle, immediateReturn);
-    }
-
-    public static void rotateRight() {
-        pilot.rotateRight();
-    }
-
-    public static void rotateLeft() {
-        pilot.rotateLeft();
     }
 
 
@@ -157,8 +144,23 @@ public class Fetchy {
     public static void createDemoRequest() {
         Delay.msDelay(2000);
         Request request = new Request();
-        request.color = "Red";
+        request.setColor("Red");
         Fetchy.requestQueue.add(request);
     }
 
+    public static boolean hasRequest() {
+        return !requestQueue.isEmpty();
+    }
+
+    public static void finishRequest() {
+        Fetchy.requestQueue.remove(0);
+        Fetchy.currentState = State.WAITING_FOR_COMMAND;
+    }
+
+    public static Request getCurrentRequest() {
+        if (!hasRequest()) {
+            throw new IllegalArgumentException("No requests in the queue.");
+        }
+        return requestQueue.get(0);
+    }
 }

@@ -36,11 +36,14 @@ public class CarryToUserBehavior extends BaseBehavior {
             Fetchy.goToStart();
         }
         while (!Fetchy.navigator.pathCompleted() && !suppressed) {
-            Thread.yield();
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         if (!suppressed) {
-            Fetchy.requestQueue.remove(0);
-            Fetchy.currentState = State.WAITING_FOR_COMMAND;
+            Fetchy.finishRequest();
         }
     }
 

@@ -12,7 +12,7 @@ public class WaitForCommandBehavior extends BaseBehavior {
 
     @Override
     public boolean takeControl() {
-        return Fetchy.requestQueue.isEmpty();
+        return !Fetchy.hasRequest();
     }
 
     @Override

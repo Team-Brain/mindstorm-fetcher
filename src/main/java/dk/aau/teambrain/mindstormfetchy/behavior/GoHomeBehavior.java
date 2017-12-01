@@ -21,7 +21,11 @@ public class GoHomeBehavior extends BaseBehavior {
         suppressed = false;
         Fetchy.goToStart();
         while (!Fetchy.navigator.pathCompleted() && !suppressed) {
-            Thread.yield();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         if (Fetchy.carryingObject) {
             Fetchy.currentState = State.CARRY_TO_USER;
