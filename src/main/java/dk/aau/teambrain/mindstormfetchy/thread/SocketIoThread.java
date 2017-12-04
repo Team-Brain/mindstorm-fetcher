@@ -41,7 +41,7 @@ public class SocketIoThread extends Thread {
             public void call(Object... objects) {
                 Log.i("Connection error.");
             }
-        }).on("request", new Emitter.Listener() {
+        }).on("task", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 try {
@@ -57,17 +57,19 @@ public class SocketIoThread extends Thread {
         }).on("abort", new Emitter.Listener() {
             @Override
             public void call(Object... objects) {
+                Log.d("abort");
                 Fetchy.onAbort();
-            }
-        }).on("abort_all", new Emitter.Listener() {
-            @Override
-            public void call(Object... objects) {
-                Fetchy.onAbortAll();
             }
         });
 
         Log.i("Connecting to SocketIO server..");
         socket.connect();
+    }
+
+    public static void notifyRequestCompleted() {
+        if (socket.connected()) {
+            socket.emit("task_finished");
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package dk.aau.teambrain.mindstormfetchy;
 
 import dk.aau.teambrain.mindstormfetchy.behavior.*;
 import dk.aau.teambrain.mindstormfetchy.model.Request;
+import dk.aau.teambrain.mindstormfetchy.thread.SocketIoThread;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
 import dk.aau.teambrain.mindstormfetchy.utils.IRSensorWrapper;
 import dk.aau.teambrain.mindstormfetchy.utils.Log;
@@ -21,9 +22,6 @@ import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Fetchy {
 
     public static ColorSensorWrapper colorSensor;
@@ -35,7 +33,7 @@ public class Fetchy {
     private static MovePilot pilot;
     private static Navigator navigator;
 
-    private static List<Request> requestQueue = new ArrayList<>();
+    private static Request currentRequest;
 
     public static State currentState;
     public static boolean carryingObject = false;
@@ -113,7 +111,6 @@ public class Fetchy {
         pilot.rotate(angle, immediateReturn);
     }
 
-
     public static void goToStart() {
         navigator.goTo(new Waypoint(0, 0, 0));
     }
@@ -141,36 +138,33 @@ public class Fetchy {
         Delay.msDelay(2000);
         Request request = new Request();
         request.setColor("Red");
-        Fetchy.requestQueue.add(request);
+        currentRequest = request;
     }
 
     public static boolean hasRequest() {
-        return !requestQueue.isEmpty();
+        return currentRequest != null;
     }
 
     public static void finishRequest() {
-        Fetchy.requestQueue.remove(0);
-        Fetchy.currentState = State.WAITING_FOR_COMMAND;
+        if (Fetchy.hasRequest()) {
+            currentRequest = null;
+        }
+        SocketIoThread.notifyRequestCompleted();
     }
 
     public static Request getCurrentRequest() {
         if (!hasRequest()) {
             throw new IllegalArgumentException("No requests in the queue.");
         }
-        return requestQueue.get(0);
+        return currentRequest;
     }
 
     public static void onNewRequest(Request request) {
-        Fetchy.requestQueue.add(request);
+        currentRequest = request;
     }
 
     public static void onAbort() {
         Fetchy.currentState = State.ABORT;
-        Fetchy.requestQueue.clear();
     }
 
-    public static void onAbortAll() {
-        Fetchy.currentState = State.ABORT;
-        Fetchy.requestQueue.clear();
-    }
 }

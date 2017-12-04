@@ -30,6 +30,9 @@ public class GoHomeBehavior extends BaseBehavior {
         if (Fetchy.carryingObject) {
             Fetchy.currentState = State.CARRY_TO_USER;
         } else {
+            if (Fetchy.hasRequest()) {
+                Fetchy.finishRequest();
+            }
             Fetchy.currentState = State.WAITING_FOR_COMMAND;
         }
     }

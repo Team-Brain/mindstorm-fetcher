@@ -43,9 +43,6 @@ public class CarryToUserBehavior extends BaseBehavior {
                 e.printStackTrace();
             }
         }
-        if (!suppressed) {
-            Fetchy.finishRequest();
-        }
     }
 
     private static void navigateToBeacon() {
