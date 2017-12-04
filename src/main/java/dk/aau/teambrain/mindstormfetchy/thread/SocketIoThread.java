@@ -3,7 +3,7 @@ package dk.aau.teambrain.mindstormfetchy.thread;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import dk.aau.teambrain.mindstormfetchy.Fetchy;
-import dk.aau.teambrain.mindstormfetchy.model.Request;
+import dk.aau.teambrain.mindstormfetchy.model.Task;
 import dk.aau.teambrain.mindstormfetchy.utils.Log;
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -45,11 +45,11 @@ public class SocketIoThread extends Thread {
             @Override
             public void call(Object... args) {
                 try {
-                    Request request = JSON_FACTORY
+                    Task task = JSON_FACTORY
                             .createJsonParser(String.valueOf(args[0]))
-                            .parse(Request.class);
-                    Log.d(request.toString());
-                    Fetchy.onNewRequest(request);
+                            .parse(Task.class);
+                    Log.d(task.toString());
+                    Fetchy.onNewTask(task);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

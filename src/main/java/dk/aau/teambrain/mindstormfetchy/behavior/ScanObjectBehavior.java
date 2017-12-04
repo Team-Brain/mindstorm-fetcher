@@ -50,7 +50,7 @@ public class ScanObjectBehavior extends BaseBehavior {
         for (int i = 0; i < SCAN_COLOR_TRIES; i++) {
             int scannedColorId = Fetchy.colorSensor.getColorID();
             if (ColorSensorWrapper.colorName(scannedColorId).toLowerCase()
-                    .equals(Fetchy.getCurrentRequest().getColor().toLowerCase())) {
+                    .equals(Fetchy.getCurrentTask().getColor().toLowerCase())) {
                 correct++;
             }
             Delay.msDelay(SCAN_COLOR_DELAY);

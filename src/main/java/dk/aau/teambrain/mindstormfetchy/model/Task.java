@@ -2,7 +2,7 @@ package dk.aau.teambrain.mindstormfetchy.model;
 
 import com.google.api.client.util.Key;
 
-public class Request {
+public class Task {
 
     @Key
     private String action;
@@ -39,7 +39,7 @@ public class Request {
 
     @Override
     public String toString() {
-        return "Request{" +
+        return "Task{" +
                 "action='" + action + '\'' +
                 ", color='" + color + '\'' +
                 ", object='" + object + '\'' +

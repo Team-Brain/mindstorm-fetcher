@@ -14,7 +14,7 @@ public class SearchBehavior extends BaseBehavior {
     }
 
     public boolean takeControl() {
-        return Fetchy.hasRequest();
+        return Fetchy.hasTask();
     }
 
     public void suppress() {

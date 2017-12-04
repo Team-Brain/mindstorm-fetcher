@@ -1,7 +1,7 @@
 package dk.aau.teambrain.mindstormfetchy;
 
 import dk.aau.teambrain.mindstormfetchy.behavior.*;
-import dk.aau.teambrain.mindstormfetchy.model.Request;
+import dk.aau.teambrain.mindstormfetchy.model.Task;
 import dk.aau.teambrain.mindstormfetchy.thread.SocketIoThread;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
 import dk.aau.teambrain.mindstormfetchy.utils.IRSensorWrapper;
@@ -33,7 +33,7 @@ public class Fetchy {
     private static MovePilot pilot;
     private static Navigator navigator;
 
-    private static Request currentRequest;
+    private static Task currentTask;
 
     public static State currentState;
     public static boolean carryingObject = false;
@@ -136,31 +136,31 @@ public class Fetchy {
 
     public static void createDemoRequest() {
         Delay.msDelay(2000);
-        Request request = new Request();
-        request.setColor("Red");
-        currentRequest = request;
+        Task task = new Task();
+        task.setColor("Red");
+        currentTask = task;
     }
 
-    public static boolean hasRequest() {
-        return currentRequest != null;
+    public static boolean hasTask() {
+        return currentTask != null;
     }
 
     public static void finishRequest() {
-        if (Fetchy.hasRequest()) {
-            currentRequest = null;
+        if (Fetchy.hasTask()) {
+            currentTask = null;
         }
         SocketIoThread.notifyRequestCompleted();
     }
 
-    public static Request getCurrentRequest() {
-        if (!hasRequest()) {
+    public static Task getCurrentTask() {
+        if (!hasTask()) {
             throw new IllegalArgumentException("No requests in the queue.");
         }
-        return currentRequest;
+        return currentTask;
     }
 
-    public static void onNewRequest(Request request) {
-        currentRequest = request;
+    public static void onNewTask(Task task) {
+        currentTask = task;
     }
 
     public static void onAbort() {
