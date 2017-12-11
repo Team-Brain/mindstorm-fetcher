@@ -19,8 +19,8 @@ public class GoHomeBehavior extends BaseBehavior {
     public void action() {
         super.action();
         suppressed = false;
-        Fetchy.goToStart();
-        while (!Fetchy.pathCompleted() && !suppressed) {
+        Fetchy.robot.goToStart();
+        while (!Fetchy.robot.pathCompleted() && !suppressed) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -38,7 +38,7 @@ public class GoHomeBehavior extends BaseBehavior {
             }
             Fetchy.setCurrentState(State.WAITING_FOR_COMMAND);
         }
-        Fetchy.stop();
+        Fetchy.robot.stop();
     }
 
 }

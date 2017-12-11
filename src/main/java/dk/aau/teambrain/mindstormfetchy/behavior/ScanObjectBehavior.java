@@ -3,7 +3,6 @@ package dk.aau.teambrain.mindstormfetchy.behavior;
 import dk.aau.teambrain.mindstormfetchy.Fetchy;
 import dk.aau.teambrain.mindstormfetchy.State;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
-import lejos.hardware.Sound;
 import lejos.utility.Delay;
 
 public class ScanObjectBehavior extends BaseBehavior {
@@ -18,21 +17,21 @@ public class ScanObjectBehavior extends BaseBehavior {
     }
 
     public boolean takeControl() {
-        return Fetchy.irSensor.getRange() < 5;
+        return Fetchy.robot.getIRDistance() < 5;
     }
 
     public void action() {
         super.action();
         suppressed = false;
-        Fetchy.travel(20);
+        Fetchy.robot.travel(20);
         Delay.msDelay(100);
         if (checkColor()) {
-            Fetchy.grab();
+            Fetchy.grabObject();
             if (!suppressed) {
                 Fetchy.setCurrentState(State.GOING_HOME);
             }
         } else {
-            Fetchy.grab();
+            Fetchy.grabObject();
             if (!suppressed) {
                 Fetchy.leaveOnTheSide(true);
             }
@@ -45,17 +44,17 @@ public class ScanObjectBehavior extends BaseBehavior {
      * return whether the success rate is over the given threshold.
      */
     private boolean checkColor() {
-        Sound.beep();
+//        Sound.beep();
         int correct = 0;
         for (int i = 0; i < SCAN_COLOR_TRIES; i++) {
-            int scannedColorId = Fetchy.colorSensor.getColorID();
+            int scannedColorId = Fetchy.robot.getColorID();
             if (ColorSensorWrapper.colorName(scannedColorId).toLowerCase()
                     .equals(Fetchy.getCurrentTask().getColor().toLowerCase())) {
                 correct++;
             }
             Delay.msDelay(SCAN_COLOR_DELAY);
         }
-        Sound.beep();
+//        Sound.beep();
         return ((float) correct / SCAN_COLOR_TRIES) >= MIN_SUCCESS_THRESHOLD;
     }
 

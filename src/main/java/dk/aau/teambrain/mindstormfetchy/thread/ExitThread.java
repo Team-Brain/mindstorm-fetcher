@@ -12,7 +12,7 @@ public class ExitThread extends Thread {
                 Fetchy.abortCurrentTask();
             }
             if (Button.ESCAPE.isDown()) {
-                Fetchy.letGo();
+                Fetchy.leaveObject();
                 Fetchy.close();
                 System.exit(200);
             }

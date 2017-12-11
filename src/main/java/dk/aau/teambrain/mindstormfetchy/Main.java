@@ -1,6 +1,5 @@
 package dk.aau.teambrain.mindstormfetchy;
 
-import dk.aau.teambrain.mindstormfetchy.thread.ExitThread;
 import dk.aau.teambrain.mindstormfetchy.thread.SocketIoThread;
 
 public class Main {
@@ -10,7 +9,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         // Start the exit listener thread
-        new ExitThread().start();
+//        new ExitThread().start();
 
         // Start the socketIO thread
         if (!DEBUG) {
@@ -18,7 +17,7 @@ public class Main {
         }
 
         // Initialize robot
-        Fetchy.init();
+        Fetchy.init(new TestRobot());
 
     }
 

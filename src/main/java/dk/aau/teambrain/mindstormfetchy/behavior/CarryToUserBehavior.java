@@ -3,7 +3,6 @@ package dk.aau.teambrain.mindstormfetchy.behavior;
 import dk.aau.teambrain.mindstormfetchy.Fetchy;
 import dk.aau.teambrain.mindstormfetchy.State;
 import dk.aau.teambrain.mindstormfetchy.utils.Log;
-import lejos.hardware.sensor.SensorMode;
 import lejos.utility.Delay;
 import lejos.utility.Stopwatch;
 
@@ -26,30 +25,20 @@ public class CarryToUserBehavior extends BaseBehavior {
         suppressed = false;
         navigateToBeacon();
         if (!suppressed) {
-            Fetchy.turn(180);
-            Fetchy.letGo();
-            Fetchy.travel(-100);
-            Fetchy.goToStart();
+            Fetchy.robot.turn(180);
+            Fetchy.leaveObject();
+            Fetchy.robot.travel(-100);
+            Fetchy.robot.stop();
+            Fetchy.setCurrentState(State.GOING_HOME);
         }
-        while (!Fetchy.pathCompleted() && !suppressed) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        Fetchy.stop();
     }
 
     private static void navigateToBeacon() {
-        SensorMode seek = Fetchy.seekerSensor.getSeekMode();
-        int direction = 0;
-        float[] sample = new float[seek.sampleSize()];
+        float direction = 0;
         // Wait for signal
         Stopwatch stopwatch = new Stopwatch();
         while (direction == 0 && !suppressed) {
-            seek.fetchSample(sample, 0);
-            direction = (int) sample[0];
+            direction = Fetchy.robot.getSeekerDirection();
             Log.d("Direction: " + direction);
             Delay.msDelay(100);
             if (stopwatch.elapsed() > TIMEOUT_BEACON_SIGNAL) {
@@ -61,34 +50,32 @@ public class CarryToUserBehavior extends BaseBehavior {
             return;
         }
 
-        Fetchy.setAngularSpeed(20);
+        Fetchy.robot.setAngularSpeed(20);
 
         // Turn around
         if (direction > 1) {
-            Fetchy.turn(90, true);
+            Fetchy.robot.turn(90, true);
         } else if (direction < -1) {
-            Fetchy.turn(-90, true);
+            Fetchy.robot.turn(-90, true);
         }
 
         while (Math.abs(direction) > 1) {
-            seek.fetchSample(sample, 0);
-            direction = (int) sample[0];
+            direction = Fetchy.robot.getSeekerDirection();
         }
 
-        Fetchy.stop();
-        Fetchy.setAngularSpeed(75);
+        Fetchy.robot.stop();
+        Fetchy.robot.setAngularSpeed(75);
 
         if (!suppressed) {
-            Fetchy.turn(direction);
-            Fetchy.backward();
+            Fetchy.robot.turn(direction);
+            Fetchy.robot.backward();
         }
 
-        int distance = Integer.MAX_VALUE;
+        float distance = Integer.MAX_VALUE;
         while (distance > 5 && !suppressed) {
-            seek.fetchSample(sample, 0);
-            distance = (int) sample[1];
+            distance = Fetchy.robot.getSeekerDistance();
         }
 
-        Fetchy.stop();
+        Fetchy.robot.stop();
     }
 }
