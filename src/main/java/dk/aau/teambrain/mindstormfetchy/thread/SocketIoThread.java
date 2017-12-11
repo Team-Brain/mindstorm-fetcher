@@ -14,10 +14,11 @@ import java.net.URISyntaxException;
 
 public class SocketIoThread extends Thread {
 
-
     private static final String SOCKET_URL = "http://fetchy-dialogflow-webhook.herokuapp.com/";
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
     private static Socket socket;
+
+    private static boolean lostConnection = false;
 
     public SocketIoThread() {
         this.setDaemon(true);
@@ -41,6 +42,13 @@ public class SocketIoThread extends Thread {
             public void call(Object... objects) {
                 Log.i("Connection error.");
             }
+        }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+            @Override
+            public void call(Object... objects) {
+                Log.i("Disconnected.");
+                lostConnection = true;
+                Fetchy.abortCurrentTask();
+            }
         }).on("task", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -49,21 +57,25 @@ public class SocketIoThread extends Thread {
                             .createJsonParser(String.valueOf(args[0]))
                             .parse(Task.class);
                     Log.d(task.toString());
-                    Fetchy.onNewTask(task);
+                    Fetchy.setCurrentTask(task);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        }).on("abort", new Emitter.Listener() {
+        }).on("abortCurrentTask", new Emitter.Listener() {
             @Override
             public void call(Object... objects) {
-                Log.d("abort");
-                Fetchy.onAbort();
+                Log.d("abortCurrentTask");
+                Fetchy.abortCurrentTask();
             }
         });
 
         Log.i("Connecting to SocketIO server..");
         socket.connect();
+    }
+
+    public static boolean isLostConnection() {
+        return lostConnection;
     }
 
     public static void notifyRequestCompleted() {

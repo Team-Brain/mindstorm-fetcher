@@ -12,12 +12,7 @@ public class AbortBehavior extends BaseBehavior {
 
     @Override
     public boolean takeControl() {
-        return Fetchy.currentState == State.ABORT;
-    }
-
-    @Override
-    public void suppress() {
-        suppressed = true;
+        return Fetchy.getCurrentState() == State.ABORT;
     }
 
     @Override
@@ -26,6 +21,6 @@ public class AbortBehavior extends BaseBehavior {
         if (Fetchy.carryingObject) {
             Fetchy.leaveOnTheSide(false);
         }
-        Fetchy.currentState = State.GOING_HOME;
+        Fetchy.setCurrentState(State.GOING_HOME);
     }
 }

@@ -11,10 +11,10 @@ import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3IRSensor;
-import lejos.robotics.RegulatedMotor;
 import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
+import lejos.robotics.navigation.Move;
 import lejos.robotics.navigation.MovePilot;
 import lejos.robotics.navigation.Navigator;
 import lejos.robotics.navigation.Waypoint;
@@ -28,18 +28,22 @@ public class Fetchy {
     public static IRSensorWrapper irSensor;
     public static EV3IRSensor seekerSensor;
 
+    private static EV3LargeRegulatedMotor leftMotor;
+    private static EV3LargeRegulatedMotor rightMotor;
     private static EV3MediumRegulatedMotor gripMotor;
 
     private static MovePilot pilot;
     private static Navigator navigator;
 
-    private static Task currentTask;
+    private static volatile Task currentTask;
 
-    public static State currentState;
+    private static volatile State currentState;
     public static boolean carryingObject = false;
 
     public static void init() {
         Log.i("Initializing Fetchy");
+
+        Fetchy.currentState = State.WAITING_FOR_COMMAND;
 
 //        // Initialize sensors
         seekerSensor = new EV3IRSensor(SensorPort.S2);
@@ -49,11 +53,10 @@ public class Fetchy {
         // Initialize grip motor
         gripMotor = new EV3MediumRegulatedMotor(MotorPort.B);
         gripMotor.setSpeed(200);
-        letGo();
 
         // Initialize pilot
-        RegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.A);
-        RegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.D);
+        leftMotor = new EV3LargeRegulatedMotor(MotorPort.A);
+        rightMotor = new EV3LargeRegulatedMotor(MotorPort.D);
         Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 32.5).offset(-78);
         Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 32.5).offset(78);
         Chassis chassis = new WheeledChassis(new Wheel[]{leftWheel, rightWheel}, WheeledChassis.TYPE_DIFFERENTIAL);
@@ -75,6 +78,14 @@ public class Fetchy {
         arb.go();
 
         Log.i("Initialization complete");
+    }
+
+    public static State getCurrentState() {
+        return currentState;
+    }
+
+    public static synchronized void setCurrentState(State currentState) {
+        Fetchy.currentState = currentState;
     }
 
     public static void travel(int distance) {
@@ -119,6 +130,14 @@ public class Fetchy {
         return navigator.pathCompleted();
     }
 
+    public static Move.MoveType getMoveType() {
+        return navigator.getMoveController().getMovement().getMoveType();
+    }
+
+    public static boolean isMoving() {
+        return navigator.isMoving();
+    }
+
     public static void setAngularSpeed(double speed) {
         pilot.setAngularSpeed(speed);
     }
@@ -135,7 +154,6 @@ public class Fetchy {
     }
 
     public static void createDemoRequest() {
-        Delay.msDelay(2000);
         Task task = new Task();
         task.setColor("Red");
         currentTask = task;
@@ -159,12 +177,23 @@ public class Fetchy {
         return currentTask;
     }
 
-    public static void onNewTask(Task task) {
+    public static void setCurrentTask(Task task) {
         currentTask = task;
     }
 
-    public static void onAbort() {
-        Fetchy.currentState = State.ABORT;
+    public static void abortCurrentTask() {
+        if (currentState != State.WAITING_FOR_COMMAND) {
+            setCurrentState(State.ABORT);
+        }
+    }
+
+    public static void close() {
+        irSensor.close();
+        colorSensor.close();
+        seekerSensor.close();
+        leftMotor.close();
+        rightMotor.close();
+        gripMotor.close();
     }
 
 }

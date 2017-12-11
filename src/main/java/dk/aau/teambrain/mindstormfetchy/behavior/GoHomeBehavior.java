@@ -12,7 +12,7 @@ public class GoHomeBehavior extends BaseBehavior {
 
     @Override
     public boolean takeControl() {
-        return Fetchy.currentState == State.GOING_HOME;
+        return Fetchy.getCurrentState() == State.GOING_HOME;
     }
 
     @Override
@@ -27,20 +27,18 @@ public class GoHomeBehavior extends BaseBehavior {
                 e.printStackTrace();
             }
         }
+        if (suppressed) {
+            return;
+        }
         if (Fetchy.carryingObject) {
-            Fetchy.currentState = State.CARRY_TO_USER;
+            Fetchy.setCurrentState(State.CARRY_TO_USER);
         } else {
             if (Fetchy.hasTask()) {
                 Fetchy.finishRequest();
             }
-            Fetchy.currentState = State.WAITING_FOR_COMMAND;
+            Fetchy.setCurrentState(State.WAITING_FOR_COMMAND);
         }
+        Fetchy.stop();
     }
-
-    @Override
-    public void suppress() {
-        suppressed = true;
-    }
-
 
 }

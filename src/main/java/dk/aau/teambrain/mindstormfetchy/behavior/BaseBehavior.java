@@ -16,4 +16,9 @@ public abstract class BaseBehavior implements Behavior {
     public void action() {
         Log.d(getName());
     }
+
+    @Override
+    public void suppress() {
+        suppressed = true;
+    }
 }

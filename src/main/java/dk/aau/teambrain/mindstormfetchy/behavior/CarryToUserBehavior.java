@@ -18,12 +18,7 @@ public class CarryToUserBehavior extends BaseBehavior {
 
     @Override
     public boolean takeControl() {
-        return Fetchy.currentState == State.CARRY_TO_USER;
-    }
-
-    @Override
-    public void suppress() {
-        suppressed = true;
+        return Fetchy.getCurrentState() == State.CARRY_TO_USER;
     }
 
     public void action() {
@@ -43,6 +38,7 @@ public class CarryToUserBehavior extends BaseBehavior {
                 e.printStackTrace();
             }
         }
+        Fetchy.stop();
     }
 
     private static void navigateToBeacon() {
@@ -57,7 +53,7 @@ public class CarryToUserBehavior extends BaseBehavior {
             Log.d("Direction: " + direction);
             Delay.msDelay(100);
             if (stopwatch.elapsed() > TIMEOUT_BEACON_SIGNAL) {
-                Fetchy.currentState = State.ABORT;
+                Fetchy.setCurrentState(State.ABORT);
             }
         }
 
