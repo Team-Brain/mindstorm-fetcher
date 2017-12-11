@@ -22,6 +22,7 @@ public class ScanObjectBehavior extends BaseBehavior {
     }
 
     public void action() {
+        super.action();
         suppressed = false;
         Fetchy.travel(20);
         Delay.msDelay(100);

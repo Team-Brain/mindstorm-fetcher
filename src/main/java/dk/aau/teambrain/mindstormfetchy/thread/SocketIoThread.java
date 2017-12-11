@@ -62,10 +62,10 @@ public class SocketIoThread extends Thread {
                     e.printStackTrace();
                 }
             }
-        }).on("abortCurrentTask", new Emitter.Listener() {
+        }).on("abort", new Emitter.Listener() {
             @Override
             public void call(Object... objects) {
-                Log.d("abortCurrentTask");
+                Log.d("abort");
                 Fetchy.abortCurrentTask();
             }
         });
