@@ -1,6 +1,4 @@
-package dk.aau.teambrain.mindstormfetchy;
-
-import lejos.robotics.navigation.Move;
+package dk.aau.teambrain.mindstormfetchy.robot;
 
 public interface FetchingRobot {
 
@@ -24,10 +22,6 @@ public interface FetchingRobot {
 
     boolean pathCompleted();
 
-    Move.MoveType getMoveType();
-
-    boolean isMoving();
-
     float getIRDistance();
 
     float getSeekerDistance();
@@ -40,5 +34,4 @@ public interface FetchingRobot {
 
     void leaveObjectOnSide(boolean turnToStartAngle);
 
-    void close();
 }

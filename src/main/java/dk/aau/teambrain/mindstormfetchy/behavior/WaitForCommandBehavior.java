@@ -1,10 +1,14 @@
 package dk.aau.teambrain.mindstormfetchy.behavior;
 
-import dk.aau.teambrain.mindstormfetchy.Fetchy;
+import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.Main;
 import lejos.utility.Delay;
 
 public class WaitForCommandBehavior extends BaseBehavior {
+
+    public WaitForCommandBehavior(BaseRobot robot) {
+        super(robot);
+    }
 
     @Override
     protected String getName() {
@@ -13,7 +17,7 @@ public class WaitForCommandBehavior extends BaseBehavior {
 
     @Override
     public boolean takeControl() {
-        return !Fetchy.hasTask();
+        return !robot.hasTask();
     }
 
     @Override
@@ -24,9 +28,9 @@ public class WaitForCommandBehavior extends BaseBehavior {
 //        }
         if (Main.DEBUG) {
             Delay.msDelay(2000);
-            Fetchy.createDemoRequest();
+//            robot.createDemoRequest();
         } else {
-            while (!Fetchy.hasTask()) {
+            while (!robot.hasTask()) {
                 try {
                     Thread.sleep(200);
                 } catch (InterruptedException e) {

@@ -1,6 +1,6 @@
 package dk.aau.teambrain.mindstormfetchy.behavior;
 
-import dk.aau.teambrain.mindstormfetchy.Fetchy;
+import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.State;
 import dk.aau.teambrain.mindstormfetchy.utils.Log;
 import lejos.utility.Delay;
@@ -10,6 +10,10 @@ public class CarryToUserBehavior extends BaseBehavior {
 
     private static final int TIMEOUT_BEACON_SIGNAL = 7 * 1000;
 
+    public CarryToUserBehavior(BaseRobot robot) {
+        super(robot);
+    }
+
     @Override
     protected String getName() {
         return "CarryToUser";
@@ -17,7 +21,7 @@ public class CarryToUserBehavior extends BaseBehavior {
 
     @Override
     public boolean takeControl() {
-        return Fetchy.getCurrentState() == State.CARRY_TO_USER;
+        return robot.getCurrentState() == State.CARRY_TO_USER;
     }
 
     public void action() {
@@ -25,24 +29,24 @@ public class CarryToUserBehavior extends BaseBehavior {
         suppressed = false;
         navigateToBeacon();
         if (!suppressed) {
-            Fetchy.robot.turn(180);
-            Fetchy.leaveObject();
-            Fetchy.robot.travel(-100);
-            Fetchy.robot.stop();
-            Fetchy.setCurrentState(State.GOING_HOME);
+            robot.turn(180);
+            robot.letGo();
+            robot.travel(-100);
+            robot.stop();
+            robot.setCurrentState(State.GOING_HOME);
         }
     }
 
-    private static void navigateToBeacon() {
+    private void navigateToBeacon() {
         float direction = 0;
         // Wait for signal
         Stopwatch stopwatch = new Stopwatch();
         while (direction == 0 && !suppressed) {
-            direction = Fetchy.robot.getSeekerDirection();
+            direction = robot.getSeekerDirection();
             Log.d("Direction: " + direction);
             Delay.msDelay(100);
             if (stopwatch.elapsed() > TIMEOUT_BEACON_SIGNAL) {
-                Fetchy.setCurrentState(State.ABORT);
+                robot.setCurrentState(State.ABORT);
             }
         }
 
@@ -50,32 +54,32 @@ public class CarryToUserBehavior extends BaseBehavior {
             return;
         }
 
-        Fetchy.robot.setAngularSpeed(20);
+        robot.setAngularSpeed(20);
 
         // Turn around
         if (direction > 1) {
-            Fetchy.robot.turn(90, true);
+            robot.turn(90, true);
         } else if (direction < -1) {
-            Fetchy.robot.turn(-90, true);
+            robot.turn(-90, true);
         }
 
         while (Math.abs(direction) > 1) {
-            direction = Fetchy.robot.getSeekerDirection();
+            direction = robot.getSeekerDirection();
         }
 
-        Fetchy.robot.stop();
-        Fetchy.robot.setAngularSpeed(75);
+        robot.stop();
+        robot.setAngularSpeed(75);
 
         if (!suppressed) {
-            Fetchy.robot.turn(direction);
-            Fetchy.robot.backward();
+            robot.turn(direction);
+            robot.backward();
         }
 
         float distance = Integer.MAX_VALUE;
         while (distance > 5 && !suppressed) {
-            distance = Fetchy.robot.getSeekerDistance();
+            distance = robot.getSeekerDistance();
         }
 
-        Fetchy.robot.stop();
+        robot.stop();
     }
 }

@@ -1,7 +1,9 @@
-package dk.aau.teambrain.mindstormfetchy;
+package dk.aau.teambrain.mindstormfetchy.robot;
 
+import dk.aau.teambrain.mindstormfetchy.State;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
 import dk.aau.teambrain.mindstormfetchy.utils.IRSensorWrapper;
+import dk.aau.teambrain.mindstormfetchy.utils.Log;
 import dk.aau.teambrain.mindstormfetchy.utils.SeekSensorWrapper;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
@@ -10,27 +12,25 @@ import lejos.hardware.port.SensorPort;
 import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
-import lejos.robotics.navigation.Move;
 import lejos.robotics.navigation.MovePilot;
 import lejos.robotics.navigation.Navigator;
 import lejos.robotics.navigation.Waypoint;
 
-public class Robot implements FetchingRobot {
+public class Fetchy extends BaseRobot {
 
-    private static ColorSensorWrapper colorSensor;
-    private static IRSensorWrapper irSensor;
-    private static SeekSensorWrapper seekerSensor;
+    private ColorSensorWrapper colorSensor;
+    private IRSensorWrapper irSensor;
+    private SeekSensorWrapper seekerSensor;
 
-    private static EV3LargeRegulatedMotor leftMotor;
-    private static EV3LargeRegulatedMotor rightMotor;
-    private static EV3MediumRegulatedMotor gripMotor;
+    private EV3LargeRegulatedMotor leftMotor;
+    private EV3LargeRegulatedMotor rightMotor;
+    private EV3MediumRegulatedMotor gripMotor;
 
-    private static MovePilot pilot;
-    private static Navigator navigator;
+    private MovePilot pilot;
+    private Navigator navigator;
 
-
-    public Robot() {
-
+    public Fetchy() {
+        Log.i("Initializing Fetchy");
         // Initialize sensors
         seekerSensor = new SeekSensorWrapper(SensorPort.S2);
         colorSensor = new ColorSensorWrapper(SensorPort.S3);
@@ -51,6 +51,8 @@ public class Robot implements FetchingRobot {
         pilot.setAngularSpeed(50);
         navigator = new Navigator(pilot, chassis.getPoseProvider());
 
+        Log.i("Initialization complete");
+        currentState = State.WAITING_FOR_COMMAND;
     }
 
     @Override
@@ -75,11 +77,13 @@ public class Robot implements FetchingRobot {
 
     @Override
     public void grab() {
+        super.grab();
         gripMotor.rotate(500);
     }
 
     @Override
     public void letGo() {
+        super.letGo();
         gripMotor.rotate(-500);
     }
 
@@ -101,16 +105,6 @@ public class Robot implements FetchingRobot {
     @Override
     public boolean pathCompleted() {
         return navigator.pathCompleted();
-    }
-
-    @Override
-    public Move.MoveType getMoveType() {
-        return navigator.getMoveController().getMovement().getMoveType();
-    }
-
-    @Override
-    public boolean isMoving() {
-        return navigator.isMoving();
     }
 
     @Override
@@ -147,15 +141,7 @@ public class Robot implements FetchingRobot {
         if (turnToStartAngle) {
             turn(-90);
         }
+        carryingObject = false;
     }
 
-    @Override
-    public void close() {
-        irSensor.close();
-        colorSensor.close();
-        seekerSensor.close();
-        leftMotor.close();
-        rightMotor.close();
-        gripMotor.close();
-    }
 }

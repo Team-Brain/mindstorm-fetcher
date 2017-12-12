@@ -1,9 +1,13 @@
 package dk.aau.teambrain.mindstormfetchy.behavior;
 
-import dk.aau.teambrain.mindstormfetchy.Fetchy;
+import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.State;
 
 public class AbortBehavior extends BaseBehavior {
+
+    public AbortBehavior(BaseRobot robot) {
+        super(robot);
+    }
 
     @Override
     protected String getName() {
@@ -12,15 +16,15 @@ public class AbortBehavior extends BaseBehavior {
 
     @Override
     public boolean takeControl() {
-        return Fetchy.getCurrentState() == State.ABORT;
+        return robot.getCurrentState() == State.ABORT;
     }
 
     @Override
     public void action() {
         super.action();
-        if (Fetchy.carryingObject) {
-            Fetchy.leaveOnTheSide(false);
+        if (robot.carryingObject) {
+            robot.leaveObjectOnSide(false);
         }
-        Fetchy.setCurrentState(State.GOING_HOME);
+        robot.setCurrentState(State.GOING_HOME);
     }
 }

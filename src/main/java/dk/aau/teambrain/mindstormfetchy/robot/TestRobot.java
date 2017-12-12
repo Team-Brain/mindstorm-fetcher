@@ -1,25 +1,16 @@
-package dk.aau.teambrain.mindstormfetchy;
+package dk.aau.teambrain.mindstormfetchy.robot;
 
+import dk.aau.teambrain.mindstormfetchy.behavior.ScanObjectBehavior;
+import dk.aau.teambrain.mindstormfetchy.model.Task;
 import lejos.robotics.Color;
-import lejos.robotics.navigation.Move;
 
-public class TestRobot implements FetchingRobot {
+public class TestRobot extends BaseRobot {
 
-    private static final int IR_START_DISTANCE = 10;
-    private static final int IR_STEP_DISTANCE = 1;
+    private int[] boxSetup = new int[]{Color.BLACK, Color.BLUE, Color.RED};
 
-    private static final int SEEKER_START_DISTANCE = 10;
-    private static final int SEEKER_STEP_DISTANCE = 1;
-
-    private static final int SEEKER_START_ANGLE = 10;
-    private static final int SEEKER_STEP_ANGLE = 1;
-
-    private int irDistance = IR_START_DISTANCE;
-    private int seekerDistance = SEEKER_START_DISTANCE;
-    private int seekerAngle = SEEKER_START_ANGLE;
+    private int currentBox = 0;
 
     public TestRobot() {
-
     }
 
     @Override
@@ -44,11 +35,13 @@ public class TestRobot implements FetchingRobot {
 
     @Override
     public void grab() {
+        super.grab();
         //
     }
 
     @Override
     public void letGo() {
+        super.letGo();
         //
     }
 
@@ -72,35 +65,6 @@ public class TestRobot implements FetchingRobot {
         return true;
     }
 
-    @Override
-    public Move.MoveType getMoveType() {
-        return Move.MoveType.STOP;
-    }
-
-    @Override
-    public boolean isMoving() {
-        return false;
-    }
-
-    @Override
-    public float getIRDistance() {
-        return 0;
-    }
-
-    @Override
-    public float getSeekerDistance() {
-        return 0;
-    }
-
-    @Override
-    public float getSeekerDirection() {
-        return 0;
-    }
-
-    @Override
-    public int getColorID() {
-        return Color.BLUE;
-    }
 
     @Override
     public void setAngularSpeed(double speed) {
@@ -113,7 +77,37 @@ public class TestRobot implements FetchingRobot {
     }
 
     @Override
-    public void close() {
-        //
+    public float getIRDistance() {
+        if (currentBox >= boxSetup.length * ScanObjectBehavior.SCAN_COLOR_TRIES) {
+            return 100;
+        }
+        return 0;
     }
+
+    @Override
+    public float getSeekerDistance() {
+        return 0;
+    }
+
+    @Override
+    public float getSeekerDirection() {
+        return 1;
+    }
+
+    @Override
+    public int getColorID() {
+        return boxSetup[currentBox++ / ScanObjectBehavior.SCAN_COLOR_TRIES];
+    }
+
+
+    @Override
+    public void onNewTask(Task task) {
+        super.onNewTask(task);
+        resetDefaultValues();
+    }
+
+    private void resetDefaultValues() {
+        currentBox = 0;
+    }
+
 }

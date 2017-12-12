@@ -1,15 +1,19 @@
 package dk.aau.teambrain.mindstormfetchy.behavior;
 
-import dk.aau.teambrain.mindstormfetchy.Fetchy;
+import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.State;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
 import lejos.utility.Delay;
 
 public class ScanObjectBehavior extends BaseBehavior {
 
-    private static final int SCAN_COLOR_TRIES = 10;
+    public static final int SCAN_COLOR_TRIES = 10;
     private static final int SCAN_COLOR_DELAY = 100;
     private static final float MIN_SUCCESS_THRESHOLD = 0.75f;
+
+    public ScanObjectBehavior(BaseRobot robot) {
+        super(robot);
+    }
 
     @Override
     protected String getName() {
@@ -17,23 +21,23 @@ public class ScanObjectBehavior extends BaseBehavior {
     }
 
     public boolean takeControl() {
-        return Fetchy.robot.getIRDistance() < 5;
+        return robot.getIRDistance() < 5;
     }
 
     public void action() {
         super.action();
         suppressed = false;
-        Fetchy.robot.travel(20);
+        robot.travel(20);
         Delay.msDelay(100);
         if (checkColor()) {
-            Fetchy.grabObject();
+            robot.grab();
             if (!suppressed) {
-                Fetchy.setCurrentState(State.GOING_HOME);
+                robot.setCurrentState(State.GOING_HOME);
             }
         } else {
-            Fetchy.grabObject();
+            robot.grab();
             if (!suppressed) {
-                Fetchy.leaveOnTheSide(true);
+                robot.leaveObjectOnSide(true);
             }
         }
 
@@ -47,9 +51,9 @@ public class ScanObjectBehavior extends BaseBehavior {
 //        Sound.beep();
         int correct = 0;
         for (int i = 0; i < SCAN_COLOR_TRIES; i++) {
-            int scannedColorId = Fetchy.robot.getColorID();
+            int scannedColorId = robot.getColorID();
             if (ColorSensorWrapper.colorName(scannedColorId).toLowerCase()
-                    .equals(Fetchy.getCurrentTask().getColor().toLowerCase())) {
+                    .equals(robot.getCurrentTask().getColor().toLowerCase())) {
                 correct++;
             }
             Delay.msDelay(SCAN_COLOR_DELAY);

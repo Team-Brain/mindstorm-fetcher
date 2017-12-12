@@ -1,6 +1,5 @@
 package dk.aau.teambrain.mindstormfetchy.thread;
 
-import dk.aau.teambrain.mindstormfetchy.Fetchy;
 import lejos.hardware.Button;
 
 public class ExitThread extends Thread {
@@ -8,12 +7,8 @@ public class ExitThread extends Thread {
     @Override
     public void run() {
         while (true) {
-            if (Button.ENTER.isDown()) {
-                Fetchy.abortCurrentTask();
-            }
+
             if (Button.ESCAPE.isDown()) {
-                Fetchy.leaveObject();
-                Fetchy.close();
                 System.exit(200);
             }
             try {

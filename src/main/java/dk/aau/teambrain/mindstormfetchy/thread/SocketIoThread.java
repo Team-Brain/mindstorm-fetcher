@@ -2,7 +2,7 @@ package dk.aau.teambrain.mindstormfetchy.thread;
 
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import dk.aau.teambrain.mindstormfetchy.Fetchy;
+import dk.aau.teambrain.mindstormfetchy.robot.TaskHandler;
 import dk.aau.teambrain.mindstormfetchy.model.Task;
 import dk.aau.teambrain.mindstormfetchy.utils.Log;
 import io.socket.client.IO;
@@ -20,8 +20,11 @@ public class SocketIoThread extends Thread {
 
     private static boolean lostConnection = false;
 
-    public SocketIoThread() {
+    private TaskHandler robot;
+
+    public SocketIoThread(TaskHandler robot) {
         this.setDaemon(true);
+        this.robot = robot;
     }
 
     @Override
@@ -47,7 +50,7 @@ public class SocketIoThread extends Thread {
             public void call(Object... objects) {
                 Log.i("Disconnected.");
                 lostConnection = true;
-                Fetchy.abortCurrentTask();
+                robot.onAbortTask();
             }
         }).on("task", new Emitter.Listener() {
             @Override
@@ -57,7 +60,7 @@ public class SocketIoThread extends Thread {
                             .createJsonParser(String.valueOf(args[0]))
                             .parse(Task.class);
                     Log.d(task.toString());
-                    Fetchy.setCurrentTask(task);
+                    robot.onNewTask(task);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -66,7 +69,7 @@ public class SocketIoThread extends Thread {
             @Override
             public void call(Object... objects) {
                 Log.d("abort");
-                Fetchy.abortCurrentTask();
+                robot.onAbortTask();
             }
         });
 
