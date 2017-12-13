@@ -44,8 +44,7 @@ public class CarryToUserBehaviorTest {
 
         long total = System.currentTimeMillis() - start;
 
-        assertEquals(false, robot.carryingObject);
-        assertEquals(State.GOING_HOME, robot.getCurrentState());
+        assertEquals(State.ABORT, robot.getCurrentState());
         assertTrue(total > CarryToUserBehavior.TIMEOUT_BEACON_SIGNAL);
 
     }

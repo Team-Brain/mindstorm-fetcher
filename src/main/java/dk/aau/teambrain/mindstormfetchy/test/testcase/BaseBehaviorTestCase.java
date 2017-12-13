@@ -2,6 +2,7 @@ package dk.aau.teambrain.mindstormfetchy.test.testcase;
 
 import dk.aau.teambrain.mindstormfetchy.behavior.WaitForCommandBehavior;
 import dk.aau.teambrain.mindstormfetchy.test.TestRobot;
+import dk.aau.teambrain.mindstormfetchy.utils.Log;
 
 import java.util.List;
 
@@ -34,6 +35,7 @@ public abstract class BaseBehaviorTestCase {
         if (behavior.equals(WaitForCommandBehavior.TAG)) {
             System.out.println("STARTING TEST CASE : " + getTag());
         }
+        System.out.println(behavior);
         String expected = states.remove(0);
         try {
             assert expected.equals(behavior);

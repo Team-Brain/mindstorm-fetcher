@@ -38,6 +38,7 @@ public class SearchBehavior extends BaseBehavior {
                 if (stopwatch.elapsed() > TIMEOUT_SEARCH) {
                     robot.setCurrentState(State.ABORT);
                     robot.stop();
+                    suppressed = true;
                     return;
                 }
                 Thread.sleep(100);

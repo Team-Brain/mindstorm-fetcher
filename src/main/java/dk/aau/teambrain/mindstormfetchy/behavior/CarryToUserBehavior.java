@@ -9,7 +9,7 @@ import lejos.utility.Stopwatch;
 
 public class CarryToUserBehavior extends BaseBehavior {
 
-    public static final int TIMEOUT_BEACON_SIGNAL = 20 * 1000;
+    public static final int TIMEOUT_BEACON_SIGNAL = 5 * 1000;
     public static final String TAG = "CarryToUser";
 
     public CarryToUserBehavior(BaseRobot robot) {
@@ -53,6 +53,7 @@ public class CarryToUserBehavior extends BaseBehavior {
             Delay.msDelay(200);
             if (stopwatch.elapsed() > TIMEOUT_BEACON_SIGNAL) {
                 robot.setCurrentState(State.ABORT);
+                suppressed = true;
                 return;
             }
         }
