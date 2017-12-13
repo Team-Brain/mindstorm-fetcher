@@ -1,6 +1,7 @@
 package dk.aau.teambrain.mindstormfetchy.robot;
 
 import dk.aau.teambrain.mindstormfetchy.State;
+import dk.aau.teambrain.mindstormfetchy.thread.SocketIoThread;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
 import dk.aau.teambrain.mindstormfetchy.utils.IRSensorWrapper;
 import dk.aau.teambrain.mindstormfetchy.utils.Log;
@@ -145,7 +146,6 @@ public class Fetchy extends BaseRobot {
         if (turnToStartAngle) {
             turn(-90);
         }
-        carryingObject = false;
     }
 
     @Override
@@ -158,5 +158,11 @@ public class Fetchy extends BaseRobot {
             }
         }
         super.onAbortTask();
+    }
+
+    @Override
+    public void onTaskFinished() {
+        super.onTaskFinished();
+        SocketIoThread.notifyRequestCompleted();
     }
 }

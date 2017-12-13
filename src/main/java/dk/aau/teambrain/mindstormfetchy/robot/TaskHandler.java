@@ -7,4 +7,6 @@ public interface TaskHandler {
     void onNewTask(Task task);
 
     void onAbortTask();
+
+    void onTaskFinished();
 }

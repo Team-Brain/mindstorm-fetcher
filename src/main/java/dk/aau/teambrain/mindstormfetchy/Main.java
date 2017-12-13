@@ -10,18 +10,18 @@ import lejos.robotics.subsumption.Behavior;
 
 public class Main {
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
+    public static final boolean OFFLINE = false;
 
     public static void main(String[] args) throws Exception {
 
         // Initialize robot
         BaseRobot fetchy = new Fetchy();
-
         // Start the exit listener thread
         new ExitThread(fetchy).start();
 
         // Start the socketIO thread
-        if (!DEBUG) {
+        if (!OFFLINE) {
             new SocketIoThread(fetchy).start();
         }
 

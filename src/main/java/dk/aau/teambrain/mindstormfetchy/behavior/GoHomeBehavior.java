@@ -2,16 +2,23 @@ package dk.aau.teambrain.mindstormfetchy.behavior;
 
 import dk.aau.teambrain.mindstormfetchy.State;
 import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
+import dk.aau.teambrain.mindstormfetchy.test.BehaviorChangeListener;
 
 public class GoHomeBehavior extends BaseBehavior {
+
+    public static final String TAG = "GoHome";
 
     public GoHomeBehavior(BaseRobot robot) {
         super(robot);
     }
 
+    public GoHomeBehavior(BaseRobot robot, BehaviorChangeListener listener) {
+        super(robot, listener);
+    }
+
     @Override
-    protected String getName() {
-        return "GoHome";
+    protected String getTag() {
+        return TAG;
     }
 
     @Override
@@ -41,7 +48,7 @@ public class GoHomeBehavior extends BaseBehavior {
             robot.setCurrentState(State.CARRY_TO_USER);
         } else {
             if (robot.hasTask()) {
-                robot.finishTask();
+                robot.onTaskFinished();
             }
             robot.setCurrentState(State.WAITING_FOR_COMMAND);
         }

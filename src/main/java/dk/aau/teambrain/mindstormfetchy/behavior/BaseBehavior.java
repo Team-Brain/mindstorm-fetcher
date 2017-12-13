@@ -1,6 +1,7 @@
 package dk.aau.teambrain.mindstormfetchy.behavior;
 
 import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
+import dk.aau.teambrain.mindstormfetchy.test.BehaviorChangeListener;
 import dk.aau.teambrain.mindstormfetchy.utils.Log;
 import lejos.robotics.subsumption.Behavior;
 
@@ -12,16 +13,30 @@ public abstract class BaseBehavior implements Behavior {
 
     protected BaseRobot robot;
 
+    private BehaviorChangeListener listener;
+
     public BaseBehavior(BaseRobot robot) {
         this.robot = robot;
     }
 
-    protected abstract String getName();
+    public BaseBehavior(BaseRobot robot, BehaviorChangeListener listener) {
+        this.robot = robot;
+        this.listener = listener;
+    }
+
+    protected abstract String getTag();
 
     @OverridingMethodsMustInvokeSuper
     @Override
     public void action() {
-        Log.d(getName());
+        // Fixes a bug with arbitrator that sometimes calls testTimeout even though takeControl returns false
+        if (!takeControl()) {
+            return;
+        }
+        Log.d(getTag());
+        if (listener != null) {
+            listener.onBehaviorChanged(getTag());
+        }
     }
 
     @Override

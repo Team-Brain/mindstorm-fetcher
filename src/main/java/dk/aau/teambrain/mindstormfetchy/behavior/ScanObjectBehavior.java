@@ -2,10 +2,13 @@ package dk.aau.teambrain.mindstormfetchy.behavior;
 
 import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.State;
+import dk.aau.teambrain.mindstormfetchy.test.BehaviorChangeListener;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
 import lejos.utility.Delay;
 
 public class ScanObjectBehavior extends BaseBehavior {
+
+    public static final String TAG = "ScanObject";
 
     public static final int SCAN_COLOR_TRIES = 10;
     private static final int SCAN_COLOR_DELAY = 100;
@@ -15,9 +18,13 @@ public class ScanObjectBehavior extends BaseBehavior {
         super(robot);
     }
 
+    public ScanObjectBehavior(BaseRobot robot, BehaviorChangeListener listener) {
+        super(robot, listener);
+    }
+
     @Override
-    protected String getName() {
-        return "ScanObject";
+    protected String getTag() {
+        return TAG;
     }
 
     public boolean takeControl() {
@@ -47,7 +54,7 @@ public class ScanObjectBehavior extends BaseBehavior {
      * Take a number of samples from the color sensor and
      * return whether the success rate is over the given threshold.
      */
-    private boolean checkColor() {
+    public boolean checkColor() {
 //        Sound.beep();
         int correct = 0;
         for (int i = 0; i < SCAN_COLOR_TRIES; i++) {

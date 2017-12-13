@@ -1,5 +1,8 @@
 package dk.aau.teambrain.mindstormfetchy.robot;
 
+/**
+ * Represent an operable robot that provides simple movement, gripping and sensor mechanisms.
+ */
 public interface FetchingRobot {
 
     void travel(int distance);

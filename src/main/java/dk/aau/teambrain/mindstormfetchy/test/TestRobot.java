@@ -1,16 +1,35 @@
-package dk.aau.teambrain.mindstormfetchy.robot;
+package dk.aau.teambrain.mindstormfetchy.test;
 
-import dk.aau.teambrain.mindstormfetchy.behavior.ScanObjectBehavior;
+import dk.aau.teambrain.mindstormfetchy.State;
 import dk.aau.teambrain.mindstormfetchy.model.Task;
+import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import lejos.robotics.Color;
 
 public class TestRobot extends BaseRobot {
 
-    private int[] boxSetup = new int[]{Color.BLACK, Color.BLUE, Color.RED};
-
-    private int currentBox = 0;
+    private int irDistance = 0;
+    private int seekerDistance = 0;
+    private int seekerDirection = 1;
+    private int colorId = Color.NONE;
 
     public TestRobot() {
+        currentState = State.WAITING_FOR_COMMAND;
+    }
+
+    public void setIrDistance(int irDistance) {
+        this.irDistance = irDistance;
+    }
+
+    public void setSeekerDistance(int seekerDistance) {
+        this.seekerDistance = seekerDistance;
+    }
+
+    public void setSeekerDirection(int seekerDirection) {
+        this.seekerDirection = seekerDirection;
+    }
+
+    public void setColorId(int colorId) {
+        this.colorId = colorId;
     }
 
     @Override
@@ -78,41 +97,33 @@ public class TestRobot extends BaseRobot {
 
     @Override
     public void leaveObjectOnSide(boolean turnToStartAngle) {
-        //
+        super.letGo();
     }
 
     @Override
     public float getIRDistance() {
-        if (currentBox >= boxSetup.length * ScanObjectBehavior.SCAN_COLOR_TRIES) {
-            return 100;
-        }
-        return 0;
+        return irDistance;
     }
 
     @Override
     public float getSeekerDistance() {
-        return 0;
+        return seekerDistance;
     }
 
     @Override
     public float getSeekerDirection() {
-        return 1;
+        return seekerDirection;
     }
 
     @Override
     public int getColorID() {
-        return boxSetup[currentBox++ / ScanObjectBehavior.SCAN_COLOR_TRIES];
+        return colorId;
     }
-
 
     @Override
     public void onNewTask(Task task) {
         super.onNewTask(task);
-        resetDefaultValues();
     }
 
-    private void resetDefaultValues() {
-        currentBox = 0;
-    }
 
 }

@@ -2,14 +2,14 @@ package dk.aau.teambrain.mindstormfetchy.robot;
 
 import dk.aau.teambrain.mindstormfetchy.State;
 import dk.aau.teambrain.mindstormfetchy.model.Task;
-import dk.aau.teambrain.mindstormfetchy.thread.SocketIoThread;
 
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 
+@SuppressWarnings("WeakerAccess")
 public abstract class BaseRobot implements FetchingRobot, TaskHandler {
 
-    protected volatile Task currentTask;
-    protected volatile State currentState;
+    protected Task currentTask;
+    protected State currentState;
 
     public boolean carryingObject = false;
 
@@ -29,11 +29,6 @@ public abstract class BaseRobot implements FetchingRobot, TaskHandler {
         return currentTask != null;
     }
 
-    public void finishTask() {
-        currentTask = null;
-        SocketIoThread.notifyRequestCompleted();
-    }
-
     @OverridingMethodsMustInvokeSuper
     @Override
     public void grab() {
@@ -49,6 +44,12 @@ public abstract class BaseRobot implements FetchingRobot, TaskHandler {
     @Override
     public void onNewTask(Task task) {
         currentTask = task;
+        currentState = State.SEARCHING;
+    }
+
+    @OverridingMethodsMustInvokeSuper
+    public void onTaskFinished() {
+        currentTask = null;
     }
 
     @Override
@@ -58,7 +59,7 @@ public abstract class BaseRobot implements FetchingRobot, TaskHandler {
 
     public void createDemoTask() {
         Task task = new Task();
-        task.setColor("Red");
+        task.setColor("Black");
         currentTask = task;
     }
 }

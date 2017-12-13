@@ -37,10 +37,17 @@ public class Task {
         return object;
     }
 
+    public Task() {
+    }
+
+    public Task(String color) {
+        this.color = color;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
-                "action='" + action + '\'' +
+                "testTimeout='" + action + '\'' +
                 ", color='" + color + '\'' +
                 ", object='" + object + '\'' +
                 '}';

@@ -1,22 +1,28 @@
 package dk.aau.teambrain.mindstormfetchy.behavior;
 
-import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.State;
+import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
+import dk.aau.teambrain.mindstormfetchy.test.BehaviorChangeListener;
 import dk.aau.teambrain.mindstormfetchy.utils.Log;
 import lejos.utility.Delay;
 import lejos.utility.Stopwatch;
 
 public class CarryToUserBehavior extends BaseBehavior {
 
-    private static final int TIMEOUT_BEACON_SIGNAL = 7 * 1000;
+    public static final int TIMEOUT_BEACON_SIGNAL = 20 * 1000;
+    public static final String TAG = "CarryToUser";
 
     public CarryToUserBehavior(BaseRobot robot) {
         super(robot);
     }
 
+    public CarryToUserBehavior(BaseRobot robot, BehaviorChangeListener listener) {
+        super(robot, listener);
+    }
+
     @Override
-    protected String getName() {
-        return "CarryToUser";
+    protected String getTag() {
+        return TAG;
     }
 
     @Override
@@ -44,9 +50,10 @@ public class CarryToUserBehavior extends BaseBehavior {
         while (direction == 0 && !suppressed) {
             direction = robot.getSeekerDirection();
             Log.d("Direction: " + direction);
-            Delay.msDelay(100);
+            Delay.msDelay(200);
             if (stopwatch.elapsed() > TIMEOUT_BEACON_SIGNAL) {
                 robot.setCurrentState(State.ABORT);
+                return;
             }
         }
 
