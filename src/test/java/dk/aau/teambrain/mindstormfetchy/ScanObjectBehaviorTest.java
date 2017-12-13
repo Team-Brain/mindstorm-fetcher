@@ -8,7 +8,7 @@ import lejos.robotics.Color;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class ScanObjectBehaviorTest {
 
@@ -40,5 +40,18 @@ public class ScanObjectBehaviorTest {
         assertEquals(State.SEARCHING, robot.getCurrentState());
         assertEquals(false, robot.carryingObject);
     }
+
+    @Test
+    public void testScanColorSuccess() {
+        robot.setColorId(Color.BLACK);
+        assertTrue(behavior.checkColor());
+    }
+
+    @Test
+    public void testScanColorFail() {
+        robot.setColorId(Color.RED);
+        assertFalse(behavior.checkColor());
+    }
+
 
 }
