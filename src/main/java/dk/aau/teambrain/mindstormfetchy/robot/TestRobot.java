@@ -61,6 +61,11 @@ public class TestRobot extends BaseRobot {
     }
 
     @Override
+    public void stopNavigation() {
+        //
+    }
+
+    @Override
     public boolean pathCompleted() {
         return true;
     }

@@ -45,13 +45,6 @@ public class SocketIoThread extends Thread {
             public void call(Object... objects) {
                 Log.i("Connection error.");
             }
-        }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-            @Override
-            public void call(Object... objects) {
-                Log.i("Disconnected.");
-                lostConnection = true;
-                robot.onAbortTask();
-            }
         }).on("task", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -82,7 +75,7 @@ public class SocketIoThread extends Thread {
     }
 
     public static void notifyRequestCompleted() {
-        if (socket.connected()) {
+        if (socket != null && socket.connected()) {
             socket.emit("task_finished");
         }
     }

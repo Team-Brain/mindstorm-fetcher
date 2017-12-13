@@ -11,11 +11,12 @@
             <groupId>com.github.bdeneuter</groupId>
             <artifactId>lejos-ev3-api</artifactId>
             <version>0.9.1-beta</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client-jackson2</artifactId>
-        <version>1.23.0</version>
+            <version>1.23.0</version>
         </dependency>
         <dependency>
             <groupId>io.socket</groupId>

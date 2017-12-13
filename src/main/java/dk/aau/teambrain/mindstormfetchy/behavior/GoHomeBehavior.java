@@ -1,7 +1,7 @@
 package dk.aau.teambrain.mindstormfetchy.behavior;
 
-import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.State;
+import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 
 public class GoHomeBehavior extends BaseBehavior {
 
@@ -31,9 +31,12 @@ public class GoHomeBehavior extends BaseBehavior {
                 e.printStackTrace();
             }
         }
+
         if (suppressed) {
+            robot.stopNavigation();
             return;
         }
+
         if (robot.carryingObject) {
             robot.setCurrentState(State.CARRY_TO_USER);
         } else {
@@ -42,7 +45,6 @@ public class GoHomeBehavior extends BaseBehavior {
             }
             robot.setCurrentState(State.WAITING_FOR_COMMAND);
         }
-        robot.stop();
     }
 
 }

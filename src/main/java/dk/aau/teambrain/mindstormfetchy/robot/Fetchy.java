@@ -12,6 +12,7 @@ import lejos.hardware.port.SensorPort;
 import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
+import lejos.robotics.navigation.Move;
 import lejos.robotics.navigation.MovePilot;
 import lejos.robotics.navigation.Navigator;
 import lejos.robotics.navigation.Waypoint;
@@ -22,8 +23,6 @@ public class Fetchy extends BaseRobot {
     private IRSensorWrapper irSensor;
     private SeekSensorWrapper seekerSensor;
 
-    private EV3LargeRegulatedMotor leftMotor;
-    private EV3LargeRegulatedMotor rightMotor;
     private EV3MediumRegulatedMotor gripMotor;
 
     private MovePilot pilot;
@@ -41,8 +40,8 @@ public class Fetchy extends BaseRobot {
         gripMotor.setSpeed(200);
 
         // Initialize pilot
-        leftMotor = new EV3LargeRegulatedMotor(MotorPort.A);
-        rightMotor = new EV3LargeRegulatedMotor(MotorPort.D);
+        EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.A);
+        EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.D);
         Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 32.5).offset(-78);
         Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 32.5).offset(78);
         Chassis chassis = new WheeledChassis(new Wheel[]{leftWheel, rightWheel}, WheeledChassis.TYPE_DIFFERENTIAL);
@@ -103,6 +102,11 @@ public class Fetchy extends BaseRobot {
     }
 
     @Override
+    public void stopNavigation() {
+        navigator.stop();
+    }
+
+    @Override
     public boolean pathCompleted() {
         return navigator.pathCompleted();
     }
@@ -144,4 +148,15 @@ public class Fetchy extends BaseRobot {
         carryingObject = false;
     }
 
+    @Override
+    public void onAbortTask() {
+        while (pilot.isMoving() && pilot.getMovement().getMoveType() == Move.MoveType.ROTATE) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        super.onAbortTask();
+    }
 }

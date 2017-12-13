@@ -2,22 +2,23 @@ package dk.aau.teambrain.mindstormfetchy;
 
 import dk.aau.teambrain.mindstormfetchy.behavior.*;
 import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
-import dk.aau.teambrain.mindstormfetchy.robot.TestRobot;
+import dk.aau.teambrain.mindstormfetchy.robot.Fetchy;
+import dk.aau.teambrain.mindstormfetchy.thread.ExitThread;
 import dk.aau.teambrain.mindstormfetchy.thread.SocketIoThread;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 
 public class Main {
 
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     public static void main(String[] args) throws Exception {
 
-        // Start the exit listener thread
-//        new ExitThread().start();
-
         // Initialize robot
-        BaseRobot fetchy = new TestRobot();
+        BaseRobot fetchy = new Fetchy();
+
+        // Start the exit listener thread
+        new ExitThread(fetchy).start();
 
         // Start the socketIO thread
         if (!DEBUG) {

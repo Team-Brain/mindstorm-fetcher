@@ -8,7 +8,7 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 public abstract class BaseBehavior implements Behavior {
 
-    protected static boolean suppressed;
+    protected boolean suppressed;
 
     protected BaseRobot robot;
 

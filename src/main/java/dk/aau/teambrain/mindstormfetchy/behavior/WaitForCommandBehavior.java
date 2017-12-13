@@ -1,7 +1,7 @@
 package dk.aau.teambrain.mindstormfetchy.behavior;
 
-import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.Main;
+import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import lejos.utility.Delay;
 
 public class WaitForCommandBehavior extends BaseBehavior {
@@ -28,7 +28,7 @@ public class WaitForCommandBehavior extends BaseBehavior {
 //        }
         if (Main.DEBUG) {
             Delay.msDelay(2000);
-//            robot.createDemoRequest();
+            robot.createDemoTask();
         } else {
             while (!robot.hasTask()) {
                 try {

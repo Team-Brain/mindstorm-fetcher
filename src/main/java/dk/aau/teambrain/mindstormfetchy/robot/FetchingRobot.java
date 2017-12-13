@@ -20,6 +20,8 @@ public interface FetchingRobot {
 
     void goToStart();
 
+    void stopNavigation();
+
     boolean pathCompleted();
 
     float getIRDistance();

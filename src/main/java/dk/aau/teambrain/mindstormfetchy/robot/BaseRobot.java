@@ -8,17 +8,13 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 public abstract class BaseRobot implements FetchingRobot, TaskHandler {
 
-    protected Task currentTask;
-    protected State currentState;
+    protected volatile Task currentTask;
+    protected volatile State currentState;
 
     public boolean carryingObject = false;
 
     public Task getCurrentTask() {
         return currentTask;
-    }
-
-    public void setCurrentTask(Task currentTask) {
-        this.currentTask = currentTask;
     }
 
     public State getCurrentState() {
@@ -58,5 +54,11 @@ public abstract class BaseRobot implements FetchingRobot, TaskHandler {
     @Override
     public void onAbortTask() {
         currentState = State.ABORT;
+    }
+
+    public void createDemoTask() {
+        Task task = new Task();
+        task.setColor("Red");
+        currentTask = task;
     }
 }
