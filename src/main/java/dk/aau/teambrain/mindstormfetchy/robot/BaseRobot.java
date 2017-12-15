@@ -60,6 +60,6 @@ public abstract class BaseRobot implements FetchingRobot, TaskHandler {
     public void createDemoTask() {
         Task task = new Task();
         task.setColor("Black");
-        currentTask = task;
+        onNewTask(task);
     }
 }
