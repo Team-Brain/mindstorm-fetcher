@@ -4,6 +4,13 @@ import dk.aau.teambrain.mindstormfetchy.State;
 import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.test.BehaviorChangeListener;
 
+/**
+ * GoHomeBehavior becomes active when robot's state changes to State.GOING_HOME.
+ * <p>
+ * The robot navigates to its starting position.
+ * When the robot reaches the starting position and carries an object it switches
+ * the state to State.CARRY_TO_USER, if not then the state is set to State.WAITING_FOR_COMMAND.
+ */
 public class GoHomeBehavior extends BaseBehavior {
 
     public static final String TAG = "GoHome";

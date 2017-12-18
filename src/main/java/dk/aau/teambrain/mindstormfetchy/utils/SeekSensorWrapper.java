@@ -4,6 +4,10 @@ import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3IRSensor;
 import lejos.robotics.SampleProvider;
 
+/**
+ * SeekerSensorWrapper wraps the EV3IRSensor and provides methods
+ * to get seekDistance and seekDirection
+ */
 public class SeekSensorWrapper {
 
     private EV3IRSensor sensor;
@@ -20,16 +24,6 @@ public class SeekSensorWrapper {
         sp = sensor.getSeekMode();
         sample = new float[sp.sampleSize()];
     }
-
-    /**
-     * Returns the underlying EV3IRSensor object.
-     *
-     * @return Sensor object reference.
-     */
-    public EV3IRSensor getSensor() {
-        return sensor;
-    }
-
 
     public float getSeekDistance() {
         sp.fetchSample(sample, 0);

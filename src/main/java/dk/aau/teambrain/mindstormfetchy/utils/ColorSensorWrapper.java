@@ -3,13 +3,12 @@ package dk.aau.teambrain.mindstormfetchy.utils;
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.Color;
-import lejos.robotics.ColorDetector;
 import lejos.robotics.ColorIdentifier;
 
 /**
- * Wrapper class for EV3ColorSensor.
+ * ColorSensorWrapper wraps the EV3ColorSensor and provides a method to get colorId.
  */
-public class ColorSensorWrapper implements ColorDetector, ColorIdentifier {
+public class ColorSensorWrapper implements ColorIdentifier {
 
     private EV3ColorSensor sensor;
     private float[] sample;
@@ -27,15 +26,6 @@ public class ColorSensorWrapper implements ColorDetector, ColorIdentifier {
     }
 
     /**
-     * Returns the underlying EV3ColorSensor object.
-     *
-     * @return Sensor object reference.
-     */
-    public EV3ColorSensor getSensor() {
-        return sensor;
-    }
-
-    /**
      * Returns current detected color. Use with Color Id mode.
      *
      * @return Color id. Color ids are in the Color object.
@@ -45,29 +35,6 @@ public class ColorSensorWrapper implements ColorDetector, ColorIdentifier {
         sensor.fetchSample(sample, 0);
         return (int) sample[0];
     }
-
-    /**
-     * Returns Color object with current detected color. Use with
-     * RGB mode and white light on target. Note that these values are
-     * the relative intensity of the reflected light of the primary colors.
-     * This is not the actual RGB value that would reproduce the color of
-     * the target surface.
-     *
-     * @return Color object with RGB intensity values of detected color.
-     */
-    @Override
-    public Color getColor() {
-        sensor.fetchSample(sample, 0);
-        return new Color((int) (sample[0] * 255), (int) (sample[1] * 255), (int) (sample[2] * 255));
-    }
-
-    /**
-     * Release resources.
-     */
-    public void close() {
-        sensor.close();
-    }
-
 
     /**
      * Map color integer to name.
@@ -110,5 +77,13 @@ public class ColorSensorWrapper implements ColorDetector, ColorIdentifier {
         }
 
         return "";
+    }
+
+
+    /**
+     * Release resources.
+     */
+    public void close() {
+        sensor.close();
     }
 }

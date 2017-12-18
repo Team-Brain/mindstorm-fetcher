@@ -1,22 +1,20 @@
 package dk.aau.teambrain.mindstormfetchy.thread;
 
-import dk.aau.teambrain.mindstormfetchy.robot.TaskHandler;
 import lejos.hardware.Button;
 
+/**
+ * Exit threads runs as a daemon in the background and listens to
+ * the Button.ESCAPE press to exit the current program.
+ */
 public class ExitThread extends Thread {
 
-    private TaskHandler robot;
-
-    public ExitThread(TaskHandler taskHandler) {
-        this.robot = taskHandler;
+    public ExitThread() {
+        setDaemon(true);
     }
 
     @Override
     public void run() {
         while (true) {
-            if (Button.ENTER.isDown()) {
-                robot.onAbortTask();
-            }
             if (Button.ESCAPE.isDown()) {
                 System.exit(200);
             }

@@ -2,10 +2,10 @@ package dk.aau.teambrain.mindstormfetchy.model;
 
 import com.google.api.client.util.Key;
 
+/**
+ * Represents a single command to fetch object for the robot.
+ */
 public class Task {
-
-    @Key
-    private String action;
 
     @Key
     private String color;
@@ -13,20 +13,12 @@ public class Task {
     @Key
     private String object;
 
-    public void setAction(String action) {
-        this.action = action;
-    }
-
     public void setColor(String color) {
         this.color = color;
     }
 
     public void setObject(String object) {
         this.object = object;
-    }
-
-    public String getAction() {
-        return action;
     }
 
     public String getColor() {
@@ -47,7 +39,6 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
-                "testTimeout='" + action + '\'' +
                 ", color='" + color + '\'' +
                 ", object='" + object + '\'' +
                 '}';

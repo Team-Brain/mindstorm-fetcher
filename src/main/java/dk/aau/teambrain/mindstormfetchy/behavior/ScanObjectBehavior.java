@@ -1,11 +1,19 @@
 package dk.aau.teambrain.mindstormfetchy.behavior;
 
-import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.State;
+import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.test.BehaviorChangeListener;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
+import lejos.hardware.Sound;
 import lejos.utility.Delay;
 
+/**
+ * ScanObjectBehavior becomes active when robot's IRSensor detects an object in front of it.
+ * <p>
+ * The robot moves towards the object and scans its color.
+ * If the color is correct one, it grabs the object and sets the state to State.GOING_HOME,
+ * otherwise it puts the object away from the path and continues searching.
+ */
 public class ScanObjectBehavior extends BaseBehavior {
 
     public static final String TAG = "ScanObject";
@@ -53,9 +61,10 @@ public class ScanObjectBehavior extends BaseBehavior {
     /**
      * Take a number of samples from the color sensor and
      * return whether the success rate is over the given threshold.
+     *
+     * @return Whether the scanned color is correct one.
      */
     public boolean checkColor() {
-//        Sound.beep();
         int correct = 0;
         for (int i = 0; i < SCAN_COLOR_TRIES; i++) {
             int scannedColorId = robot.getColorID();
@@ -65,7 +74,6 @@ public class ScanObjectBehavior extends BaseBehavior {
             }
             Delay.msDelay(SCAN_COLOR_DELAY);
         }
-//        Sound.beep();
         return ((float) correct / SCAN_COLOR_TRIES) >= MIN_SUCCESS_THRESHOLD;
     }
 

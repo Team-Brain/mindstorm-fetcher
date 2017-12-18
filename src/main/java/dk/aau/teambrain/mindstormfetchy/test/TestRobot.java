@@ -5,6 +5,9 @@ import dk.aau.teambrain.mindstormfetchy.model.Task;
 import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import lejos.robotics.Color;
 
+/**
+ * TestRobot class represents mocked robot object.
+ */
 public class TestRobot extends BaseRobot {
 
     private int irDistance = 0;
@@ -14,22 +17,6 @@ public class TestRobot extends BaseRobot {
 
     public TestRobot() {
         currentState = State.WAITING_FOR_COMMAND;
-    }
-
-    public void setIrDistance(int irDistance) {
-        this.irDistance = irDistance;
-    }
-
-    public void setSeekerDistance(int seekerDistance) {
-        this.seekerDistance = seekerDistance;
-    }
-
-    public void setSeekerDirection(int seekerDirection) {
-        this.seekerDirection = seekerDirection;
-    }
-
-    public void setColorId(int colorId) {
-        this.colorId = colorId;
     }
 
     @Override
@@ -123,6 +110,42 @@ public class TestRobot extends BaseRobot {
     @Override
     public void onNewTask(Task task) {
         super.onNewTask(task);
+    }
+
+    /**
+     * Set mocked IRSensor distance.
+     *
+     * @param irDistance mocked IRSensor distance
+     */
+    public void setIrDistance(int irDistance) {
+        this.irDistance = irDistance;
+    }
+
+    /**
+     * Set mocked IRSensor seeker mode distance.
+     *
+     * @param seekerDistance mocked IRSensor seeker mode distance
+     */
+    public void setSeekerDistance(int seekerDistance) {
+        this.seekerDistance = seekerDistance;
+    }
+
+    /**
+     * Set mocked IRSensor seeker mode direction.
+     *
+     * @param seekerDirection mocked IRSensor seeker mode direction
+     */
+    public void setSeekerDirection(int seekerDirection) {
+        this.seekerDirection = seekerDirection;
+    }
+
+    /**
+     * Set mocked ColorSensor colorId.
+     *
+     * @param colorId mocked ColorSensor colorId
+     */
+    public void setColorId(int colorId) {
+        this.colorId = colorId;
     }
 
 

@@ -2,8 +2,8 @@ package dk.aau.teambrain.mindstormfetchy.thread;
 
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import dk.aau.teambrain.mindstormfetchy.robot.TaskHandler;
 import dk.aau.teambrain.mindstormfetchy.model.Task;
+import dk.aau.teambrain.mindstormfetchy.robot.TaskHandler;
 import dk.aau.teambrain.mindstormfetchy.utils.Log;
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -12,7 +12,12 @@ import io.socket.emitter.Emitter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-public class SocketIoThread extends Thread {
+/**
+ * WebSocketThread connects to the cloud app using the Socket.IO WebSocket and
+ * listens to events.
+ * This class handles all the communication with the cloud application.
+ */
+public class WebSocketThread extends Thread {
 
     private static final String SOCKET_URL = "http://fetchy-dialogflow-webhook.herokuapp.com/";
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
@@ -22,7 +27,7 @@ public class SocketIoThread extends Thread {
 
     private TaskHandler robot;
 
-    public SocketIoThread(TaskHandler robot) {
+    public WebSocketThread(TaskHandler robot) {
         this.setDaemon(true);
         this.robot = robot;
     }

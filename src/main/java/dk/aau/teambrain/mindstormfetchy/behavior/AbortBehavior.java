@@ -4,6 +4,12 @@ import dk.aau.teambrain.mindstormfetchy.State;
 import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.test.BehaviorChangeListener;
 
+/**
+ * AbortBehavior becomes active when robot's state changes to State.ABORT.
+ * <p>
+ * If the robot carries an object, it leaves it on a side and returns home
+ * by switching the state to State.GOING_HOME.
+ */
 public class AbortBehavior extends BaseBehavior {
 
     public static final String TAG = "Abort";

@@ -6,6 +6,11 @@ import dk.aau.teambrain.mindstormfetchy.test.testcase.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TestDriver listens to behavior changes and handles BehaviorTestCases.
+ * When the robot switches its state to State.WAITING_FOR_COMMAND, the
+ * test driver switches the current test case.
+ */
 public class TestDriver implements BehaviorChangeListener {
 
     // List of test cases to execute

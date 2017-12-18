@@ -1,5 +1,8 @@
 package dk.aau.teambrain.mindstormfetchy;
 
+/**
+ * Possible states of the robot.
+ */
 public enum State {
 
     WAITING_FOR_COMMAND,

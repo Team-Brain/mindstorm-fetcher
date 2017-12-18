@@ -5,6 +5,13 @@ import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.test.BehaviorChangeListener;
 import lejos.utility.Stopwatch;
 
+/**
+ * SearchBehavior becomes active when robot's state changes to State.SEARCHING.
+ * <p>
+ * The robot searches moves forward and searches for objects in front of it.
+ * The forward movement can either by suppressed by the object being close by
+ * or a time out.
+ */
 public class SearchBehavior extends BaseBehavior {
 
     public static final String TAG = "Search";

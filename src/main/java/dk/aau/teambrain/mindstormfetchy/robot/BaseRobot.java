@@ -57,6 +57,9 @@ public abstract class BaseRobot implements FetchingRobot, TaskHandler {
         currentState = State.ABORT;
     }
 
+    /**
+     * Creates demo task.
+     */
     public void createDemoTask() {
         Task task = new Task();
         task.setColor("Black");

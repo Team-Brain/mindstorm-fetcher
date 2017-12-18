@@ -1,7 +1,7 @@
 package dk.aau.teambrain.mindstormfetchy.robot;
 
 import dk.aau.teambrain.mindstormfetchy.State;
-import dk.aau.teambrain.mindstormfetchy.thread.SocketIoThread;
+import dk.aau.teambrain.mindstormfetchy.thread.WebSocketThread;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
 import dk.aau.teambrain.mindstormfetchy.utils.IRSensorWrapper;
 import dk.aau.teambrain.mindstormfetchy.utils.Log;
@@ -163,6 +163,6 @@ public class Fetchy extends BaseRobot {
     @Override
     public void onTaskFinished() {
         super.onTaskFinished();
-        SocketIoThread.notifyRequestCompleted();
+        WebSocketThread.notifyRequestCompleted();
     }
 }

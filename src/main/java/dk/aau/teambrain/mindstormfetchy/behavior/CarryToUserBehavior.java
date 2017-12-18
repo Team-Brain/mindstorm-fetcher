@@ -7,9 +7,16 @@ import dk.aau.teambrain.mindstormfetchy.utils.Log;
 import lejos.utility.Delay;
 import lejos.utility.Stopwatch;
 
+/**
+ * CarryToUserBehavior becomes active when robot's state changes to State.CARRY_TO_USER.
+ * <p>
+ * The robot searches for the beacon and navigates towards it. When it reaches it, it puts
+ * the object down and navigates back home.
+ * If the beacon can not be found within specified time, the state of the robot is set to State.ABORT.
+ */
 public class CarryToUserBehavior extends BaseBehavior {
 
-    public static final int TIMEOUT_BEACON_SIGNAL = 5 * 1000;
+    public static final int TIMEOUT_BEACON_SIGNAL = 20 * 1000;
     public static final String TAG = "CarryToUser";
 
     public CarryToUserBehavior(BaseRobot robot) {

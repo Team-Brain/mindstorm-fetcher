@@ -5,6 +5,11 @@ import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.test.BehaviorChangeListener;
 import lejos.utility.Delay;
 
+/**
+ * CarryToUserBehavior becomes active when robot's state changes to State.WAIT_FOR_COMMAND.
+ * <p>
+ * The robot stays at the starting position until a new command arrives.
+ */
 public class WaitForCommandBehavior extends BaseBehavior {
 
     public static final String TAG = "WaitForCommand";
@@ -30,7 +35,7 @@ public class WaitForCommandBehavior extends BaseBehavior {
     @Override
     public void action() {
         super.action();
-//        if (SocketIoThread.isLostConnection()) {
+//        if (WebSocketThread.isLostConnection()) {
 //            System.exit(500);
 //        }
         if (Main.OFFLINE) {

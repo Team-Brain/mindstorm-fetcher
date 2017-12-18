@@ -12,7 +12,7 @@ import lejos.robotics.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-// Abort after successful scan use case
+// Abort after scan use case
 public class BehaviorTestCase3 extends BaseBehaviorTestCase {
 
     @Override

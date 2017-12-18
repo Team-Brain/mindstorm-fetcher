@@ -6,7 +6,7 @@ import lejos.robotics.RangeFinder;
 import lejos.robotics.SampleProvider;
 
 /**
- * Wrapper class for EV3UltrasonicSensor.
+ * IRSensorWrapper wraps the EV3IRSensor and provides methods get current range.
  */
 public class IRSensorWrapper implements RangeFinder {
 
@@ -25,14 +25,6 @@ public class IRSensorWrapper implements RangeFinder {
         sample = new float[sp.sampleSize()];
     }
 
-    /**
-     * Returns the underlying EV3IRSensor object.
-     *
-     * @return Sensor object reference.
-     */
-    public EV3IRSensor getSensor() {
-        return sensor;
-    }
 
     /**
      * Get range (distance) to object detected by IR sensor.

@@ -4,7 +4,7 @@ import dk.aau.teambrain.mindstormfetchy.behavior.*;
 import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.robot.Fetchy;
 import dk.aau.teambrain.mindstormfetchy.thread.ExitThread;
-import dk.aau.teambrain.mindstormfetchy.thread.SocketIoThread;
+import dk.aau.teambrain.mindstormfetchy.thread.WebSocketThread;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 
@@ -18,11 +18,11 @@ public class Main {
         // Initialize robot
         BaseRobot fetchy = new Fetchy();
         // Start the exit listener thread
-        new ExitThread(fetchy).start();
+        new ExitThread().start();
 
         // Start the socketIO thread
         if (!OFFLINE) {
-            new SocketIoThread(fetchy).start();
+            new WebSocketThread(fetchy).start();
         }
 
         // Initialize behaviours
