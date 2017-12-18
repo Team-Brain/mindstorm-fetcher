@@ -83,7 +83,7 @@ public class CarryToUserBehavior extends BaseBehavior {
         }
 
         robot.stop();
-        robot.setAngularSpeed(75);
+        robot.setAngularSpeed(35);
 
         if (!suppressed) {
             robot.turn(direction);

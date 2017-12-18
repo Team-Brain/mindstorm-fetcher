@@ -43,12 +43,13 @@ public class Fetchy extends BaseRobot {
         // Initialize pilot
         EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.A);
         EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.D);
-        Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 32.5).offset(-78);
-        Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 32.5).offset(78);
+        Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 32.2).offset(-80);
+        Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 32.5).offset(80);
         Chassis chassis = new WheeledChassis(new Wheel[]{leftWheel, rightWheel}, WheeledChassis.TYPE_DIFFERENTIAL);
         pilot = new MovePilot(chassis);
-        pilot.setLinearSpeed(100);
-        pilot.setAngularSpeed(50);
+//        pilot.setLinearAcceleration(100);
+        pilot.setLinearSpeed(75);
+        pilot.setAngularSpeed(30);
         navigator = new Navigator(pilot, chassis.getPoseProvider());
 
         Log.i("Initialization complete");
@@ -139,12 +140,12 @@ public class Fetchy extends BaseRobot {
 
     @Override
     public void leaveObjectOnSide(boolean turnToStartAngle) {
-        turn(90);
+        turn(-90);
         pilot.travel(100);
         letGo();
         pilot.travel(-100);
         if (turnToStartAngle) {
-            turn(-90);
+            turn(90);
         }
     }
 
