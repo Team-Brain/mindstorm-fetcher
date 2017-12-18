@@ -11,6 +11,7 @@ import lejos.robotics.subsumption.Behavior;
 public class Main {
 
     public static final boolean DEBUG = false;
+
     public static final boolean OFFLINE = false;
 
     public static void main(String[] args) throws Exception {

@@ -39,6 +39,7 @@ public class SearchBehavior extends BaseBehavior {
         super.action();
         Stopwatch stopwatch = new Stopwatch();
         suppressed = false;
+//        robot.travel(10000, true);
         robot.forward();
         while (!suppressed) {
             try {

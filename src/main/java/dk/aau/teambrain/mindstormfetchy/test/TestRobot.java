@@ -22,6 +22,11 @@ public class TestRobot extends BaseRobot {
     public void travel(int distance) {
         //
     }
+    
+    @Override
+    public void travel(int distance, boolean immediateReturn) {
+        //
+    }
 
     @Override
     public void forward() {

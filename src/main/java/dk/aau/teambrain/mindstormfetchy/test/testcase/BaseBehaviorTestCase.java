@@ -34,6 +34,7 @@ public abstract class BaseBehaviorTestCase {
         if (behavior.equals(WaitForCommandBehavior.TAG)) {
             System.out.println("STARTING TEST CASE : " + getTag());
         }
+
         String expected = states.remove(0);
         try {
             assert expected.equals(behavior);

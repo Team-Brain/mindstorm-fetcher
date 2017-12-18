@@ -43,13 +43,13 @@ public class Fetchy extends BaseRobot {
         // Initialize pilot
         EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.A);
         EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.D);
-        Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 32.2).offset(-80);
-        Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 32.5).offset(80);
+        Wheel leftWheel = WheeledChassis.modelWheel(leftMotor, 32.5).offset(-79);
+        Wheel rightWheel = WheeledChassis.modelWheel(rightMotor, 32.5).offset(79);
         Chassis chassis = new WheeledChassis(new Wheel[]{leftWheel, rightWheel}, WheeledChassis.TYPE_DIFFERENTIAL);
         pilot = new MovePilot(chassis);
-//        pilot.setLinearAcceleration(100);
-        pilot.setLinearSpeed(75);
-        pilot.setAngularSpeed(30);
+        pilot.setLinearAcceleration(300);
+        pilot.setLinearSpeed(100);
+        pilot.setAngularSpeed(40);
         navigator = new Navigator(pilot, chassis.getPoseProvider());
 
         Log.i("Initialization complete");
@@ -58,6 +58,11 @@ public class Fetchy extends BaseRobot {
     @Override
     public void travel(int distance) {
         pilot.travel(distance);
+    }
+    
+    @Override
+    public void travel(int distance, boolean immediateReturn) {
+        pilot.travel(distance, immediateReturn);
     }
 
     @Override

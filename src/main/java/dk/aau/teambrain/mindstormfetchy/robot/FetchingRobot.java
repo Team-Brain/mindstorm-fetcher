@@ -12,6 +12,8 @@ public interface FetchingRobot {
      * @param distance Distance to travel.
      */
     void travel(int distance);
+    
+    void travel(int distance, boolean immediateReturn);
 
     /**
      * Move the robot forward.

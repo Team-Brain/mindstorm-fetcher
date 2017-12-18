@@ -24,6 +24,9 @@ public class TestDriver implements BehaviorChangeListener {
         testCasesToRun.add(new BehaviorTestCase2(robot));
         testCasesToRun.add(new BehaviorTestCase3(robot));
         testCasesToRun.add(new BehaviorTestCase4(robot));
+        testCasesToRun.add(new BehaviorTestCase5(robot));
+    	testCasesToRun.add(new BehaviorTestCase6(robot));
+    	testCasesToRun.add(new BehaviorTestCase7(robot));
     }
 
     @Override
