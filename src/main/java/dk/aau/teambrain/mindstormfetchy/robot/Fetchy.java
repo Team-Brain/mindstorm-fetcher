@@ -67,7 +67,8 @@ public class Fetchy extends BaseRobot {
 
     @Override
     public void forward() {
-        pilot.forward();
+    	// fixes the acceleration bug
+        pilot.travel(10000, true);
     }
 
     @Override
