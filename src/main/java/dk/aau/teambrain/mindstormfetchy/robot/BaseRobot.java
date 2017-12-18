@@ -13,6 +13,10 @@ public abstract class BaseRobot implements FetchingRobot, TaskHandler {
 
     public boolean carryingObject = false;
 
+    public BaseRobot() {
+        currentState = State.WAITING_FOR_COMMAND;
+    }
+
     public Task getCurrentTask() {
         return currentTask;
     }

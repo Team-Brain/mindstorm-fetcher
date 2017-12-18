@@ -1,6 +1,5 @@
 package dk.aau.teambrain.mindstormfetchy.robot;
 
-import dk.aau.teambrain.mindstormfetchy.State;
 import dk.aau.teambrain.mindstormfetchy.thread.WebSocketThread;
 import dk.aau.teambrain.mindstormfetchy.utils.ColorSensorWrapper;
 import dk.aau.teambrain.mindstormfetchy.utils.IRSensorWrapper;
@@ -30,6 +29,7 @@ public class Fetchy extends BaseRobot {
     private Navigator navigator;
 
     public Fetchy() {
+        super();
         Log.i("Initializing Fetchy");
         // Initialize sensors
         seekerSensor = new SeekSensorWrapper(SensorPort.S2);
@@ -53,7 +53,6 @@ public class Fetchy extends BaseRobot {
         navigator = new Navigator(pilot, chassis.getPoseProvider());
 
         Log.i("Initialization complete");
-        currentState = State.WAITING_FOR_COMMAND;
     }
 
     @Override

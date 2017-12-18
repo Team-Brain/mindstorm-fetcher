@@ -1,6 +1,5 @@
 package dk.aau.teambrain.mindstormfetchy.test;
 
-import dk.aau.teambrain.mindstormfetchy.State;
 import dk.aau.teambrain.mindstormfetchy.model.Task;
 import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import lejos.robotics.Color;
@@ -16,7 +15,7 @@ public class TestRobot extends BaseRobot {
     private int colorId = Color.NONE;
 
     public TestRobot() {
-        currentState = State.WAITING_FOR_COMMAND;
+        super();
     }
 
     @Override
