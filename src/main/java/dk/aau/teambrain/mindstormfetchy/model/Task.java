@@ -8,25 +8,57 @@ import com.google.api.client.util.Key;
 public class Task {
 
     @Key
+    private String id;
+
+    @Key
     private String color;
 
     @Key
     private String object;
 
-    public void setColor(String color) {
-        this.color = color;
+    @Key
+    private String timestamp;
+
+    private boolean finished;
+
+    public String getId() {
+        return id;
     }
 
-    public void setObject(String object) {
-        this.object = object;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getColor() {
         return color;
     }
 
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     public String getObject() {
         return object;
+    }
+
+    public void setObject(String object) {
+        this.object = object;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 
     public Task() {

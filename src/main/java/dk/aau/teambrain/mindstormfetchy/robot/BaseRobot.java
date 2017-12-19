@@ -17,12 +17,18 @@ public abstract class BaseRobot implements FetchingRobot, TaskHandler {
         currentState = State.WAITING_FOR_COMMAND;
     }
 
+    public abstract void init();
+
     public Task getCurrentTask() {
         return currentTask;
     }
 
     public State getCurrentState() {
         return currentState;
+    }
+
+    public void clearCurrentTask() {
+        currentTask = null;
     }
 
     public void setCurrentState(State currentState) {
@@ -47,13 +53,18 @@ public abstract class BaseRobot implements FetchingRobot, TaskHandler {
 
     @Override
     public void onNewTask(Task task) {
-        currentTask = task;
-        currentState = State.SEARCHING;
+        if (currentTask == null) {
+            currentTask = task;
+            currentState = State.SEARCHING;
+        } else {
+            // Ignore task from websocket until finished
+        }
     }
 
     @OverridingMethodsMustInvokeSuper
+    @Override
     public void onTaskFinished() {
-        currentTask = null;
+        currentTask.setFinished(true);
     }
 
     @Override

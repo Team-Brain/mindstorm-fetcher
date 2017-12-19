@@ -19,6 +19,11 @@ public class TestRobot extends BaseRobot {
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void travel(int distance) {
         //
     }
@@ -114,6 +119,11 @@ public class TestRobot extends BaseRobot {
     @Override
     public void onNewTask(Task task) {
         super.onNewTask(task);
+    }
+
+    @Override
+    public void onTaskFinished() {
+        currentTask = null;
     }
 
     /**
