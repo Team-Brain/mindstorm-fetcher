@@ -12,23 +12,32 @@ public class Main {
 
     public static final boolean DEBUG = false;
 
+    private static boolean initialized = false;
+
     public static void main(String[] args) throws Exception {
 
         // Initialize robot
-        BaseRobot fetchy = new Fetchy();
+        final BaseRobot robot = new Fetchy();
+
         // Start the exit listener thread
         new ExitThread().start();
 
         // Start the socketIO thread
-        new WebSocketThread(fetchy).start();
+        new WebSocketThread(robot).start();
+
+        while (!WebSocketThread.isConnected()) {
+            Thread.sleep(200);
+        }
+
+        robot.init();
 
         // Initialize behaviours
-        Behavior searchBeh = new SearchBehavior(fetchy);
-        Behavior scanBeh = new ScanObjectBehavior(fetchy);
-        Behavior goHomeBehavior = new GoHomeBehavior(fetchy);
-        Behavior carryToUserBeh = new CarryToUserBehavior(fetchy);
-        Behavior abortBeh = new AbortBehavior(fetchy);
-        Behavior waitForCommandBeh = new WaitForCommandBehavior(fetchy);
+        Behavior searchBeh = new SearchBehavior(robot);
+        Behavior scanBeh = new ScanObjectBehavior(robot);
+        Behavior goHomeBehavior = new GoHomeBehavior(robot);
+        Behavior carryToUserBeh = new CarryToUserBehavior(robot);
+        Behavior abortBeh = new AbortBehavior(robot);
+        Behavior waitForCommandBeh = new WaitForCommandBehavior(robot);
         Behavior[] bArray = {searchBeh, scanBeh, goHomeBehavior, carryToUserBeh, abortBeh, waitForCommandBeh};
         Arbitrator arb = new Arbitrator(bArray);
         arb.go();

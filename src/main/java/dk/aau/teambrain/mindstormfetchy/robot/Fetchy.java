@@ -30,6 +30,10 @@ public class Fetchy extends BaseRobot {
 
     public Fetchy() {
         super();
+    }
+
+    @Override
+    public void init() {
         Log.i("Initializing Fetchy");
         // Initialize sensors
         seekerSensor = new SeekSensorWrapper(SensorPort.S2);

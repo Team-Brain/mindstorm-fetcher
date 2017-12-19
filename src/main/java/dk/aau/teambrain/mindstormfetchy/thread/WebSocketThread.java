@@ -9,6 +9,7 @@ import io.socket.client.Ack;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import lejos.utility.Stopwatch;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -20,16 +21,21 @@ import java.net.URISyntaxException;
  */
 public class WebSocketThread extends Thread {
 
-    //    private static final String SOCKET_URL = "http://fetchy-dialogflow-webhook.herokuapp.com/";
-    private static final String SOCKET_URL = "http://172.17.184.130:3000";
+    private static final String SOCKET_URL = "http://fetchy-webhook.herokuapp.com/";
+    //    private static final String SOCKET_URL = "http://172.17.184.130:3000";
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
     private static Socket socket;
 
     private static BaseRobot baseRobot;
+    private Stopwatch watch;
 
     public WebSocketThread(BaseRobot robot) {
-        this.setDaemon(true);
+        setDaemon(true);
         baseRobot = robot;
+    }
+
+    public static boolean isConnected() {
+        return socket != null && socket.connected();
     }
 
     @Override
@@ -44,7 +50,7 @@ public class WebSocketThread extends Thread {
             @Override
             public void call(Object... args) {
                 Log.i("Connection successful.");
-
+                Log.i("Took: " + watch.elapsed() + "ms");
             }
         }).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
             @Override
@@ -57,7 +63,7 @@ public class WebSocketThread extends Thread {
                 try {
                     Task task = JSON_FACTORY.createJsonParser(String.valueOf(args[0]))
                             .parse(Task.class);
-
+                    Log.i(task.getColor());
                     // No task execution
                     if (baseRobot.getCurrentTask() == null) {
                         baseRobot.onNewTask(task);
@@ -71,12 +77,13 @@ public class WebSocketThread extends Thread {
         }).on("abort", new Emitter.Listener() {
             @Override
             public void call(Object... objects) {
-                Log.d("abort");
+                Log.i("abort");
                 baseRobot.onAbortTask();
             }
         });
 
         Log.i("Connecting to SocketIO server..");
+        watch = new Stopwatch();
         socket.connect();
     }
 
@@ -86,7 +93,7 @@ public class WebSocketThread extends Thread {
                 @Override
                 public void call(Object... objects) {
                     baseRobot.clearCurrentTask();
-                    Log.d("Finished ack");
+                    Log.i("Finished ack");
                 }
             });
         }

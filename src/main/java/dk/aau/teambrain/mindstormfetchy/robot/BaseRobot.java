@@ -17,6 +17,8 @@ public abstract class BaseRobot implements FetchingRobot, TaskHandler {
         currentState = State.WAITING_FOR_COMMAND;
     }
 
+    public abstract void init();
+
     public Task getCurrentTask() {
         return currentTask;
     }
