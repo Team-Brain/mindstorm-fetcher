@@ -35,7 +35,6 @@ public class WaitForCommandBehavior extends BaseBehavior {
     public void action() {
         super.action();
 
-
         while (!robot.hasTask()) {
             try {
                 Thread.sleep(200);
