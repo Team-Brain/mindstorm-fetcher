@@ -163,6 +163,6 @@ public class Fetchy extends BaseRobot {
     @Override
     public void onTaskFinished() {
         super.onTaskFinished();
-        WebSocketThread.notifyRequestCompleted();
+        WebSocketThread.notifyTaskCompleted();
     }
 }

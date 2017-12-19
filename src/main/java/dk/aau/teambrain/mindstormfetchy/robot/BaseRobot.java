@@ -25,6 +25,10 @@ public abstract class BaseRobot implements FetchingRobot, TaskHandler {
         return currentState;
     }
 
+    public void clearCurrentTask() {
+        currentTask = null;
+    }
+
     public void setCurrentState(State currentState) {
         this.currentState = currentState;
     }
@@ -47,13 +51,18 @@ public abstract class BaseRobot implements FetchingRobot, TaskHandler {
 
     @Override
     public void onNewTask(Task task) {
-        currentTask = task;
-        currentState = State.SEARCHING;
+        if (currentTask == null) {
+            currentTask = task;
+            currentState = State.SEARCHING;
+        } else {
+            // Ignore task from websocket until finished
+        }
     }
 
     @OverridingMethodsMustInvokeSuper
+    @Override
     public void onTaskFinished() {
-        currentTask = null;
+        currentTask.setFinished(true);
     }
 
     @Override

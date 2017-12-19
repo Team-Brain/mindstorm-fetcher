@@ -3,8 +3,9 @@ package dk.aau.teambrain.mindstormfetchy.thread;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import dk.aau.teambrain.mindstormfetchy.model.Task;
-import dk.aau.teambrain.mindstormfetchy.robot.TaskHandler;
+import dk.aau.teambrain.mindstormfetchy.robot.BaseRobot;
 import dk.aau.teambrain.mindstormfetchy.utils.Log;
+import io.socket.client.Ack;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -19,17 +20,16 @@ import java.net.URISyntaxException;
  */
 public class WebSocketThread extends Thread {
 
-    private static final String SOCKET_URL = "http://fetchy-dialogflow-webhook.herokuapp.com/";
+    //    private static final String SOCKET_URL = "http://fetchy-dialogflow-webhook.herokuapp.com/";
+    private static final String SOCKET_URL = "http://172.17.184.130:3000";
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
     private static Socket socket;
 
-    private static boolean lostConnection = false;
+    private static BaseRobot baseRobot;
 
-    private TaskHandler robot;
-
-    public WebSocketThread(TaskHandler robot) {
+    public WebSocketThread(BaseRobot robot) {
         this.setDaemon(true);
-        this.robot = robot;
+        baseRobot = robot;
     }
 
     @Override
@@ -44,6 +44,7 @@ public class WebSocketThread extends Thread {
             @Override
             public void call(Object... args) {
                 Log.i("Connection successful.");
+
             }
         }).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
             @Override
@@ -54,11 +55,15 @@ public class WebSocketThread extends Thread {
             @Override
             public void call(Object... args) {
                 try {
-                    Task task = JSON_FACTORY
-                            .createJsonParser(String.valueOf(args[0]))
+                    Task task = JSON_FACTORY.createJsonParser(String.valueOf(args[0]))
                             .parse(Task.class);
-                    Log.d(task.toString());
-                    robot.onNewTask(task);
+
+                    // No task execution
+                    if (baseRobot.getCurrentTask() == null) {
+                        baseRobot.onNewTask(task);
+                    } else if (baseRobot.getCurrentTask().isFinished()) {
+                        notifyTaskCompleted();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -67,7 +72,7 @@ public class WebSocketThread extends Thread {
             @Override
             public void call(Object... objects) {
                 Log.d("abort");
-                robot.onAbortTask();
+                baseRobot.onAbortTask();
             }
         });
 
@@ -75,13 +80,15 @@ public class WebSocketThread extends Thread {
         socket.connect();
     }
 
-    public static boolean isLostConnection() {
-        return lostConnection;
-    }
-
-    public static void notifyRequestCompleted() {
+    public static void notifyTaskCompleted() {
         if (socket != null && socket.connected()) {
-            socket.emit("task_finished");
+            socket.emit("task_finished", baseRobot.getCurrentTask().getId(), new Ack() {
+                @Override
+                public void call(Object... objects) {
+                    baseRobot.clearCurrentTask();
+                    Log.d("Finished ack");
+                }
+            });
         }
     }
 

@@ -11,7 +11,6 @@ import lejos.robotics.subsumption.Behavior;
 public class Main {
 
     public static final boolean DEBUG = false;
-    public static final boolean OFFLINE = false;
 
     public static void main(String[] args) throws Exception {
 
@@ -21,9 +20,7 @@ public class Main {
         new ExitThread().start();
 
         // Start the socketIO thread
-        if (!OFFLINE) {
-            new WebSocketThread(fetchy).start();
-        }
+        new WebSocketThread(fetchy).start();
 
         // Initialize behaviours
         Behavior searchBeh = new SearchBehavior(fetchy);

@@ -111,6 +111,11 @@ public class TestRobot extends BaseRobot {
         super.onNewTask(task);
     }
 
+    @Override
+    public void onTaskFinished() {
+        currentTask = null;
+    }
+
     /**
      * Set mocked IRSensor distance.
      *
