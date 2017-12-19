@@ -63,7 +63,7 @@ public class Fetchy extends BaseRobot {
     public void travel(int distance) {
         pilot.travel(distance);
     }
-    
+
     @Override
     public void travel(int distance, boolean immediateReturn) {
         pilot.travel(distance, immediateReturn);
@@ -71,13 +71,14 @@ public class Fetchy extends BaseRobot {
 
     @Override
     public void forward() {
-    	// fixes the acceleration bug
+        // fixes the acceleration bug
         pilot.travel(10000, true);
     }
 
     @Override
     public void backward() {
-        pilot.backward();
+        // fixes the acceleration bug
+        pilot.travel(-10000, true);
     }
 
     @Override
